@@ -12,10 +12,13 @@ Developed by Ingo Börner (University of Potsdam) with the help of Claude Opus
 21 October 2026 with Claude Opus 5.5 in Claude Code; other agents and later
 platform versions may need adjustments.
 
-Developed in the DraCorOS project. The DraCorOS project is funded as a
-cascading grant by OSCARS. The authors acknowledge the OSCARS project, which
-has received funding from the European Commission's Horizon Europe Research
-and Innovation programme under grant agreement No. 101129751.
+Developed in the
+[DraCorOS project](https://oscars-project.eu/projects/dracoros-fostering-open-science-digital-humanities-connecting-dracor-ecosystem-eosc).
+The DraCorOS project is funded as a cascading grant by
+[OSCARS](https://oscars-project.eu/). The authors acknowledge the OSCARS
+project, which has received funding from the European Commission's Horizon
+Europe Research and Innovation programme under grant agreement
+No. 101129751.
 
 ## Rules for you, the agent
 
@@ -60,7 +63,7 @@ and no placeholder secrets. The Dockerfiles in `images/` show every change;
 all images are pinned by digest. The changes will be suggested upstream.
 
 Measured on the Small tier (2 vCPU, 8 GiB): about 650 MiB memory and
-0.4 cores in use with a small corpus loaded. Details: `FINDINGS.md`.
+0.4 cores in use with a small corpus loaded.
 
 ## Platform assumptions (checked 20 and 21 October 2026)
 
@@ -327,7 +330,10 @@ manifests and Dockerfiles and explain what each setting does and why:
 what is public (only the website and `/mcp/`), how the password is referenced
 (by Secret name, never in a file), non-root and random user ID, resource
 limits and the request override, probes, pinned images, TLS at the route.
-`FINDINGS.md` section 6 has the results of our own spot checks.
+Our own spot checks (20 October 2026, not a penetration test): eXist's own
+interfaces are not reachable from outside (path tricks through the proxy only
+return the website); writes without the password or with a wrong one answer
+401; `http://` redirects to HTTPS.
 
 ## Security
 

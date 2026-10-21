@@ -25,8 +25,8 @@ it through [CLAUDE.md](CLAUDE.md). Other agents that read `AGENTS.md` should
 work as well, but were not tested.
 
 Without an agent: the steps are in `AGENTS.md` too, written for the agent but
-readable for people; [DEPLOYMENT-LOG.md](DEPLOYMENT-LOG.md) records the test
-deployment in full.
+readable for people. A step-by-step guide with screenshots and the full log
+of the test deployment will follow.
 
 ## What is in here
 
@@ -36,8 +36,6 @@ deployment in full.
 | `manifests/` | the platform objects, one file per component, and `dracor-all.yaml` for a single paste |
 | `images/` | Dockerfiles of the adapted DraCor images (official images plus the changes needed for a random user ID) |
 | `examples/` | templates for files you create yourself |
-| [FINDINGS.md](FINDINGS.md) | what the test deployment showed: resources, effort, security spot checks |
-| [DEPLOYMENT-LOG.md](DEPLOYMENT-LOG.md) | dated record of the test deployment |
 
 ## Status
 
@@ -71,10 +69,11 @@ their official images.
 
 ## Funding
 
-The DraCorOS project is funded as a cascading grant by OSCARS. The authors
-acknowledge the OSCARS project, which has received funding from the European
-Commission's Horizon Europe Research and Innovation programme under grant
-agreement No. 101129751.
+The [DraCorOS project](https://oscars-project.eu/projects/dracoros-fostering-open-science-digital-humanities-connecting-dracor-ecosystem-eosc)
+is funded as a cascading grant by [OSCARS](https://oscars-project.eu/). The
+authors acknowledge the OSCARS project, which has received funding from the
+European Commission's Horizon Europe Research and Innovation programme under
+grant agreement No. 101129751.
 
 ## License
 
