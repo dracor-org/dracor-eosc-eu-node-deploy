@@ -1,0 +1,18 @@
+# Public address. Only the frontend is exposed; the API is reached through
+# the frontend at /api/v1. eXist's own interfaces stay inside the project.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: dracor
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: frontend
+spec:
+  to:
+    kind: Service
+    name: dracor-frontend
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

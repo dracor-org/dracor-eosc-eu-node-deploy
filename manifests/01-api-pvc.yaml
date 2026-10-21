@@ -1,0 +1,15 @@
+# Volume for the eXist database: loaded corpora survive pod restarts.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dracor-api-data
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: api
+spec:
+  storageClassName: fast
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

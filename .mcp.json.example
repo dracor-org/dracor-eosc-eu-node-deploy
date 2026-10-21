@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dracor-eosc": {
+      "type": "http",
+      "url": "https://REPLACE-WITH-YOUR-HOST/mcp/"
+    }
+  }
+}

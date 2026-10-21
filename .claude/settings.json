@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "blockReadsOutsideWorkingDirectories": true,
+    "deny": [
+      "Read(~/.dracor-eosc-netrc)",
+      "Edit(~/.dracor-eosc-netrc)",
+      "Bash(cat *netrc*)",
+      "Bash(head *netrc*)",
+      "Bash(tail *netrc*)",
+      "Bash(less *netrc*)",
+      "Bash(more *netrc*)",
+      "Bash(grep *netrc*)",
+      "Bash(sed *netrc*)",
+      "Bash(awk *netrc*)",
+      "Bash(cp *netrc*)",
+      "Bash(base64 *netrc*)",
+      "Bash(xxd *netrc*)",
+      "Bash(od *netrc*)",
+      "Bash(strings *netrc*)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "filesystem": {
+      "denyRead": ["~"],
+      "allowRead": [".", "~/.dracor-eosc-netrc"]
+    },
+    "network": {
+      "allowedDomains": [
+        "*.eu-2.open-science-cloud-user-apps.eu",
+        "open-science-cloud.ec.europa.eu",
+        "raw.githubusercontent.com",
+        "api.github.com"
+      ]
+    }
+  }
+}

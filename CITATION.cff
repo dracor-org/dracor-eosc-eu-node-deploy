@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this guide, please cite it as below."
+title: "Your own DraCor on the EOSC EU Node: an agent-guided deployment"
+type: software
+authors:
+  - family-names: "Börner"
+    given-names: "Ingo"
+    orcid: "https://orcid.org/0000-0001-8294-2541"
+    affiliation: "University of Potsdam"
+abstract: >-
+  Manifests, adapted container images and a guide for coding agents that
+  walks a researcher through deploying their own DraCor instance (API,
+  website, MCP server) on the Cloud Container Platform of the EOSC EU Node.
+  Developed with the help of Claude Opus 5.5 (Anthropic). The DraCorOS
+  project is funded as a cascading grant by OSCARS. The authors acknowledge
+  the OSCARS project, which has received funding from the European
+  Commission's Horizon Europe Research and Innovation programme under grant
+  agreement No. 101129751.
+version: "0.1.0"
+date-released: "2026-10-21"
+license: MIT
+repository-code: "https://github.com/dracor-org/dracor-eosc-eu-node-deploy"
+keywords:
+  - DraCor
+  - EOSC
+  - EOSC EU Node
+  - OpenShift
+  - OKD
+  - Kubernetes
+  - MCP
+  - digital humanities
+  - computational literary studies

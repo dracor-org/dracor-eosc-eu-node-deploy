@@ -1,0 +1,355 @@
+# Quick path: the whole DraCor in one paste (Import YAML).
+# Before pasting: create the Secret "dracor-api" with the key EXIST_PASSWORD
+# (Workloads -> Secrets -> Create -> Key/value secret), and replace
+# REPLACE-WITH-YOUR-HOST and REPLACE-WITH-YOUR-PROJECT below. The DNS server
+# 172.30.0.10 is the OKD 4 default (see 04-frontend.yaml).
+# Contents: volume, API, metrics, frontend, public address (Route), MCP.
+# Volume for the eXist database: loaded corpora survive pod restarts.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dracor-api-data
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: api
+spec:
+  storageClassName: fast
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+# DraCor API (eXist-db). Needs the Secret "dracor-api" with the key
+# EXIST_PASSWORD, created in the console before this is applied.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dracor-api
+  labels:
+    app: dracor-api
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: api
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate   # one pod at a time: single-writer database, tight Small quota
+  selector:
+    matchLabels:
+      app: dracor-api
+  template:
+    metadata:
+      labels:
+        app: dracor-api
+    spec:
+      containers:
+        - name: api
+          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-api-eosc:1.4.1@sha256:c7964977bcc133d6bfc4e0fbe50632677db0cd483986485d9c031fa08326af32
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: EXIST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dracor-api
+                  key: EXIST_PASSWORD
+            # Public address of the API, reported in /api/v1/info.
+            # Written into the database on the first start.
+            - name: DRACOR_API_BASE
+              value: https://REPLACE-WITH-YOUR-HOST/api/v1
+            - name: METRICS_SERVER
+              value: http://dracor-metrics:8030/metrics/
+            - name: JAVA_OPTS
+              value: -Xmx2g
+          resources:
+            requests:
+              cpu: 400m
+              memory: 2304Mi
+            limits:
+              cpu: 800m
+              memory: 3Gi
+          # Jetty answers before the DraCor app is deployed, so probe the API itself.
+          startupProbe:
+            httpGet:
+              path: /exist/restxq/v1/info
+              port: http
+            periodSeconds: 10
+            failureThreshold: 60   # up to 10 minutes for the first start
+          # /info is slow while a corpus loads (eXist busy): readiness may drop
+          # out for a while, but liveness only checks that the port is open,
+          # so a long load is not killed. (DraCor has no cheap health endpoint.)
+          readinessProbe:
+            httpGet:
+              path: /exist/restxq/v1/info
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 30
+            failureThreshold: 10
+          volumeMounts:
+            - name: data
+              mountPath: /opt/exist/data
+            - name: logs
+              mountPath: /opt/exist/logs
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: dracor-api-data
+        - name: logs
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dracor-api
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: api
+spec:
+  selector:
+    app: dracor-api
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+---
+# DraCor metrics: network metrics service, used by the API. Stateless.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dracor-metrics
+  labels:
+    app: dracor-metrics
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: metrics
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate   # tight Small quota: no second pod during updates
+  selector:
+    matchLabels:
+      app: dracor-metrics
+  template:
+    metadata:
+      labels:
+        app: dracor-metrics
+    spec:
+      containers:
+        - name: metrics
+          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-metrics-eosc:1.5.3@sha256:366c6e10648ad07a509a957bf153cfd035f115e32f908706612bf7cc9fa2343c
+          ports:
+            - name: http
+              containerPort: 8030
+          resources:
+            requests:
+              cpu: 150m
+              memory: 384Mi
+            limits:
+              cpu: 300m
+              memory: 512Mi
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dracor-metrics
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: metrics
+spec:
+  selector:
+    app: dracor-metrics
+  ports:
+    - name: http
+      port: 8030
+      targetPort: http
+---
+# DraCor frontend: web interface; nginx forwards /api/v1 to the API.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dracor-frontend
+  labels:
+    app: dracor-frontend
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: frontend
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate   # tight Small quota: no second pod during updates
+  selector:
+    matchLabels:
+      app: dracor-frontend
+  template:
+    metadata:
+      labels:
+        app: dracor-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-frontend-eosc:2.7.1@sha256:ab90490f36f7c7108542224ee2b3630d318f204562f928dd727461a4e1aca5b3
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            # Full DNS name of the API Service: nginx's own resolver does not
+            # use the search domains, so the short name "dracor-api" fails.
+            - name: DRACOR_API_HOST
+              value: http://dracor-api.REPLACE-WITH-YOUR-PROJECT.svc.cluster.local:8080
+            - name: DRACOR_API_PREFIX
+              value: /exist/restxq/v1
+            # Cluster DNS server: read it with "cat /etc/resolv.conf" in the
+            # terminal of any running pod (line "nameserver ...").
+            - name: NGINX_RESOLVER
+              value: 172.30.0.10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 96Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dracor-frontend
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: frontend
+spec:
+  selector:
+    app: dracor-frontend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+---
+# Public address. Only the frontend is exposed; the API is reached through
+# the frontend at /api/v1. eXist's own interfaces stay inside the project.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: dracor
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: frontend
+spec:
+  to:
+    kind: Service
+    name: dracor-frontend
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+---
+# DraCor MCP: lets AI assistants query this instance; reads only (no password).
+# Register in Claude Code with the address ending in /mcp/ (trailing slash).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dracor-mcp
+  labels:
+    app: dracor-mcp
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: mcp
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate   # tight Small quota: no second pod during updates
+  selector:
+    matchLabels:
+      app: dracor-mcp
+  template:
+    metadata:
+      labels:
+        app: dracor-mcp
+    spec:
+      containers:
+        - name: mcp
+          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/dracor/mcp:v1.0.0-alpha.4@sha256:516c35ecf53e3b8502589ccf8e3cd79b0829b162fb070f5582a368751e978283
+          # short service name is enough here (Python uses the cluster resolver)
+          env:
+            - name: DRACOR_API_BASE_URL
+              value: http://dracor-api:8080/exist/restxq/v1
+            - name: DRACOR_MCP_TRANSPORT
+              value: streamable-http
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            requests:
+              cpu: 50m
+              memory: 192Mi
+            limits:
+              cpu: 100m
+              memory: 256Mi
+          # the MCP has no health endpoint; check that the port is open
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dracor-mcp
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: mcp
+spec:
+  selector:
+    app: dracor-mcp
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+---
+# Same public address as the web interface, path /mcp.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: dracor-mcp
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: mcp
+  annotations:
+    haproxy.router.openshift.io/timeout: 120s   # some MCP calls take a while
+spec:
+  host: REPLACE-WITH-YOUR-HOST
+  path: /mcp
+  to:
+    kind: Service
+    name: dracor-mcp
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

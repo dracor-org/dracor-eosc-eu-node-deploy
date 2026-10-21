@@ -1,0 +1,32 @@
+# Internal working files: this repo is public, these must not leak.
+CLAUDE.local.md
+BRIEF-*.md
+*-BRIEF.md
+
+# Session/agent working notes (keep the published runbook and manifests tracked)
+session_notes/
+notes-internal/
+.claude/*
+!.claude/settings.json
+
+# OS noise
+.DS_Store
+
+# Raw screenshots (may show names, project IDs, credit balances); redacted copies get published separately
+screenshots-raw/
+
+# per-user MCP registration (your host); the repo ships .mcp.json.example
+.mcp.json
+
+# filled-in manifests for your own project (written by the agent)
+local/
+
+# held back until upstream knows about the placeholder secrets (Ingo, 21 Oct 2026)
+DEPLOYMENT-LOG.md
+FINDINGS.md
+
+# credentials: never commit (the example with placeholders is fine)
+.dracor-eosc-netrc
+*.netrc
+.netrc
+!examples/dracor-eosc-netrc.example

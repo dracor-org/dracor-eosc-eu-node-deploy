@@ -1,0 +1,97 @@
+# DraCor API (eXist-db). Needs the Secret "dracor-api" with the key
+# EXIST_PASSWORD, created in the console before this is applied.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dracor-api
+  labels:
+    app: dracor-api
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: api
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate   # one pod at a time: single-writer database, tight Small quota
+  selector:
+    matchLabels:
+      app: dracor-api
+  template:
+    metadata:
+      labels:
+        app: dracor-api
+    spec:
+      containers:
+        - name: api
+          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-api-eosc:1.4.1@sha256:c7964977bcc133d6bfc4e0fbe50632677db0cd483986485d9c031fa08326af32
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: EXIST_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dracor-api
+                  key: EXIST_PASSWORD
+            # Public address of the API, reported in /api/v1/info.
+            # Written into the database on the first start.
+            - name: DRACOR_API_BASE
+              value: https://REPLACE-WITH-YOUR-HOST/api/v1
+            - name: METRICS_SERVER
+              value: http://dracor-metrics:8030/metrics/
+            - name: JAVA_OPTS
+              value: -Xmx2g
+          resources:
+            requests:
+              cpu: 400m
+              memory: 2304Mi
+            limits:
+              cpu: 800m
+              memory: 3Gi
+          # Jetty answers before the DraCor app is deployed, so probe the API itself.
+          startupProbe:
+            httpGet:
+              path: /exist/restxq/v1/info
+              port: http
+            periodSeconds: 10
+            failureThreshold: 60   # up to 10 minutes for the first start
+          # /info is slow while a corpus loads (eXist busy): readiness may drop
+          # out for a while, but liveness only checks that the port is open,
+          # so a long load is not killed. (DraCor has no cheap health endpoint.)
+          readinessProbe:
+            httpGet:
+              path: /exist/restxq/v1/info
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 30
+            failureThreshold: 10
+          volumeMounts:
+            - name: data
+              mountPath: /opt/exist/data
+            - name: logs
+              mountPath: /opt/exist/logs
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: dracor-api-data
+        - name: logs
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dracor-api
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: api
+spec:
+  selector:
+    app: dracor-api
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http

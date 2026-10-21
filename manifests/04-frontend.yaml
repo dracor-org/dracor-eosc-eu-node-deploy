@@ -1,0 +1,70 @@
+# DraCor frontend: web interface; nginx forwards /api/v1 to the API.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dracor-frontend
+  labels:
+    app: dracor-frontend
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: frontend
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate   # tight Small quota: no second pod during updates
+  selector:
+    matchLabels:
+      app: dracor-frontend
+  template:
+    metadata:
+      labels:
+        app: dracor-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-frontend-eosc:2.7.1@sha256:ab90490f36f7c7108542224ee2b3630d318f204562f928dd727461a4e1aca5b3
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            # Full DNS name of the API Service: nginx's own resolver does not
+            # use the search domains, so the short name "dracor-api" fails.
+            - name: DRACOR_API_HOST
+              value: http://dracor-api.REPLACE-WITH-YOUR-PROJECT.svc.cluster.local:8080
+            - name: DRACOR_API_PREFIX
+              value: /exist/restxq/v1
+            # Cluster DNS server: read it with "cat /etc/resolv.conf" in the
+            # terminal of any running pod (line "nameserver ...").
+            - name: NGINX_RESOLVER
+              value: REPLACE-WITH-NAMESERVER-IP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 96Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            periodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dracor-frontend
+  labels:
+    app.kubernetes.io/part-of: dracor
+    app.kubernetes.io/component: frontend
+spec:
+  selector:
+    app: dracor-frontend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
