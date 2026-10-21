@@ -24,15 +24,16 @@ Then say hello. The agent follows [AGENTS.md](AGENTS.md); Claude Code reads
 it through [CLAUDE.md](CLAUDE.md). Other agents that read `AGENTS.md` should
 work as well, but were not tested.
 
-Without an agent: the steps are in `AGENTS.md` too, written for the agent but
-readable for people. A step-by-step guide with screenshots and the full log
-of the test deployment will follow.
+Without an agent: follow the step-by-step guide
+[docs/guide-eosc-eu-node.md](docs/guide-eosc-eu-node.md) (draft; screenshots
+will follow).
 
 ## What is in here
 
 | Path | Content |
 |---|---|
 | [AGENTS.md](AGENTS.md) | the guide the agent follows |
+| [docs/guide-eosc-eu-node.md](docs/guide-eosc-eu-node.md) | the step-by-step guide for people (draft) |
 | `manifests/` | the platform objects, one file per component, and `dracor-all.yaml` for a single paste |
 | `images/` | Dockerfiles of the adapted DraCor images (official images plus the changes needed for a random user ID) |
 | `examples/` | templates for files you create yourself |
