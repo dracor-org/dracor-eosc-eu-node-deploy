@@ -25,7 +25,7 @@ it through [CLAUDE.md](CLAUDE.md). Other agents that read `AGENTS.md` should
 work as well, but were not tested.
 
 Without an agent: follow the step-by-step guide
-[docs/guide-eosc-eu-node.md](docs/guide-eosc-eu-node.md) (draft; screenshots
+[docs/guide-eosc-eu-node.md](docs/guide-eosc-eu-node.md) (draft; some screenshots
 will follow).
 
 ## What is in here
@@ -67,6 +67,8 @@ Background: BLOG-POST-URL.
 DraCor is developed by the DraCor team and contributors at
 [dracor-org](https://github.com/dracor-org); the images here are built on
 their official images.
+
+We thank Angelika Hechtl for testing the agent mode.
 
 ## Funding
 

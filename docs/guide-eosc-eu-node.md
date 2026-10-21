@@ -14,7 +14,7 @@ license: "CC BY 4.0"
 :class: tip
 
 **Author:** Ingo Börner ([ORCID 0000-0001-8294-2541](https://orcid.org/0000-0001-8294-2541))  
-**Version:** 0.1 (2026-10-21), draft; screenshots will follow  
+**Version:** 0.1 (2026-10-21), draft; some screenshots still to come  
 **Review status:** Not reviewed  
 **Tested:** 20 and 21 October 2026, EU-2 cluster, Small tier, personal project  
 **Repository:** [dracor-org/dracor-eosc-eu-node-deploy](https://github.com/dracor-org/dracor-eosc-eu-node-deploy)  
@@ -23,7 +23,7 @@ license: "CC BY 4.0"
 ```{note}
 **How to use this guide:** The guide takes you through the whole deployment, from the first login to a running DraCor with a corpus of your choice. You can follow it **on your own**: the configuration files are ready in the repository, and you only fill in a few values. Or you work **together with a coding agent** (an AI assistant that works in your terminal, reads and writes files and runs commands with your approval; we used Claude Code): the agent fills in the values, explains each step and helps when something goes wrong; boxes marked "With an agent" say where it takes over. The steps on the platform itself (logging in, booking, clicking in the web console, creating the password) are always yours.
 
-**Draft:** the screenshots are not included yet and will follow.
+**Draft:** a few screenshots are still missing (marked NEW SCREENSHOT) and will follow.
 ```
 
 ## 1. Overview
@@ -443,6 +443,10 @@ If something does not work as described, especially if an agent reports that a s
 
 This guide was drafted with the assistance of a large language model (Claude Opus 5.5, Anthropic) in Claude Code. The deployment it describes was carried out by the author in tandem with the same model: the author operated the platform, the model prepared and tested the configuration files and kept the deployment log. The model drafted the guide from that log, the screenshots and the author's instructions. All content was reviewed and edited by the author.
 
-## 10. Funding
+## 10. Acknowledgements
+
+We thank Angelika Hechtl for testing the agent mode.
+
+## 11. Funding
 
 The [DraCorOS project](https://oscars-project.eu/projects/dracoros-fostering-open-science-digital-humanities-connecting-dracor-ecosystem-eosc) is funded as a cascading grant by [OSCARS](https://oscars-project.eu/). The authors acknowledge the OSCARS project, which has received funding from the European Commission's Horizon Europe Research and Innovation programme under grant agreement No. 101129751.
