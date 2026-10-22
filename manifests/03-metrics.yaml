@@ -1,3 +1,4 @@
+# Replace REPLACE-WITH-YOUR-CLUSTER with your cluster (eu-1, eu-2, ...).
 # DraCor metrics: network metrics service, used by the API. Stateless.
 apiVersion: apps/v1
 kind: Deployment
@@ -21,7 +22,7 @@ spec:
     spec:
       containers:
         - name: metrics
-          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-metrics-eosc:1.5.3@sha256:366c6e10648ad07a509a957bf153cfd035f115e32f908706612bf7cc9fa2343c
+          image: registry.REPLACE-WITH-YOUR-CLUSTER.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-metrics-eosc:1.5.3@sha256:366c6e10648ad07a509a957bf153cfd035f115e32f908706612bf7cc9fa2343c
           ports:
             - name: http
               containerPort: 8030

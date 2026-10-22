@@ -47,7 +47,7 @@ At the end of this guide you will have:
 * A **text editor** and a **terminal** with `curl` (on macOS and Linux built in; on Windows use [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)). Optionally `git`; the repository can also be downloaded as a ZIP file.
 * A **password manager** for the database password.
 * Optional: a **coding agent**. We tested with [Claude Code](https://claude.com/claude-code); other agents that read an `AGENTS.md` file should work as well, but were not tested.
-* About **30 to 45 minutes**, plus the time to load corpora (minutes for a small corpus, hours for a large one).
+* Time: about **30 minutes** if you know the platform's console; for a first time rather **an hour or more**, because the console takes some getting used to. Plus the time to load corpora (minutes for a small corpus, hours for a large one).
 
 No programming is required. You fill in a few values in text files and paste them into a web form.
 
@@ -111,7 +111,11 @@ The agent cannot reach the platform: it does not have your login, and it should 
 
 ### 5.1. Log in to the EOSC EU Node
 
-Open [open-science-cloud.ec.europa.eu](https://open-science-cloud.ec.europa.eu/) and choose **"Log in via MyAccessID"**. Search for your home institution and log in with your usual university account.
+Open [open-science-cloud.ec.europa.eu](https://open-science-cloud.ec.europa.eu/) and click the login button at the top right of the page. On the login page, choose **"Log in via MyAccessID"**. Search for your home institution and log in with your usual university account.
+
+If this is your first time on the EU Node, you are asked to register and to accept the EU Node's Terms of Service before you continue. Take a moment to read them; registration is needed only once. After that, the EU Node offers a short guided tour; you can follow it or close it.
+
+NEW SCREENSHOT: the registration page with the Terms of Service (first login).
 
 ```{figure} images/eosc-guide/01-login-search.png
 ---
@@ -142,6 +146,8 @@ width: 100%
 ---
 The account overview. Top right: your name and access group. Bottom left: remaining credits and the days until they are refreshed.
 ```
+
+If you are a **Collaborator**, everything in this guide works: 1,000 credits per 90 days are more than enough for a DraCor on the Small tier. Your account may show a **"Request Upgrade"** option to become an Investigator (more credits, all tiers, group projects); you do not need it for this guide.
 
 If you are an Observer, you have no credits of your own; the way forward is a group project of a colleague with Investigator status (see 4.1).
 
@@ -179,7 +185,7 @@ width: 100%
 The order is submitted; you will get a notification when the resources are allocated.
 ```
 
-When it is done, the page shows the environment under **"Allocated environments"**, with its cluster (here EU-2) and the **access expiration date**. Note that date.
+When it is done, the page shows the environment under **"Allocated environments"**, with its cluster (here EU-2) and the **access expiration date**. Note that date, best right away in your calendar with a reminder a week before: the platform warns only once, five days before the end, and does not renew the allocation by itself. (With an agent: as soon as you have the date, it offers to create a calendar file with the date and reminders.)
 
 ```{figure} images/eosc-guide/07-allocated.png
 ---
@@ -211,10 +217,16 @@ width: 100%
 The project list. Your new personal project appears with "Created: Just now".
 ```
 
-```{admonition} The console at a glance
-:class: tip
-The console used in this guide is the "Core platform" view (shown at the top of the left menu). Everything you need is under **Workloads** (Topology, Pods, Deployments, Secrets) and **Storage**. The **plus-in-circle icon** in the top bar is where you paste configuration files ("Import YAML"). Dates and numbers follow your browser's language settings.
-```
+#### A short tour of the console
+
+The web console of the platform is powerful but not self-explanatory. Before you start, find the three places you will need; nothing is created yet.
+
+1. **The view.** Directly below the dark top navigation bar, at the top of the left menu, is a wide drop-down box with a gear icon. It should read **"Core platform"** (see the screenshot above, top left). If it shows something else, such as "Developer", click it and choose "Core platform".
+2. **Where the password goes.** In the left menu, open **Workloads**, then **Secrets** (see 5.6). There is already a Secret called `registry-credentials`; it belongs to the platform, leave it alone.
+3. **Where configuration files are pasted.** In the dark top navigation bar, on the right, are four items: a grid of squares, a **plus in a circle**, a question mark, and your name. The plus opens a menu with **"Import YAML"** (see 5.8).
+
+Later you will check under **Workloads → Pods** whether everything runs. Dates and numbers in the console follow your browser's language settings.
+
 
 ### 5.5. Get the configuration files
 
@@ -229,7 +241,7 @@ The configuration files are in the folder `manifests/`.
 
 ```{admonition} With an agent
 :class: tip
-Start the agent in the repository folder (for Claude Code: `claude`) and say hello. The agent introduces itself, asks for your project name and shows an overview of the steps; it keeps showing where you are at every step. It fills in the values for you (5.7) and writes the results into a folder `local/`.
+Start the agent in the repository folder (for Claude Code: `claude`) and say hello. The agent asks which language you want to work in (English by default), introduces itself, asks for your project name and shows an overview of the steps; it keeps showing where you are at every step. It fills in the values for you (5.7) and writes the results into a folder `local/`.
 
 NEW SCREENSHOT: the agent's greeting and the progress table in the terminal.
 ```
@@ -279,9 +291,10 @@ The configuration files contain placeholders for the values of your project. Fro
 | Placeholder | Value | Example |
 |---|---|---|
 | `REPLACE-WITH-YOUR-PROJECT` | your project name | `pp-0123abcd-...` |
-| `REPLACE-WITH-YOUR-HOST` | `dracor-` + project name + `.eu-2.open-science-cloud-user-apps.eu` | `dracor-pp-0123abcd-....eu-2.open-science-cloud-user-apps.eu` |
+| `REPLACE-WITH-YOUR-CLUSTER` | the cluster shown on your allocated environment (5.3), in lower case | `eu-1` or `eu-2` |
+| `REPLACE-WITH-YOUR-HOST` | `dracor-` + project name + `.` + cluster + `.open-science-cloud-user-apps.eu` | `dracor-pp-0123abcd-....eu-1.open-science-cloud-user-apps.eu` |
 
-The host follows the pattern the platform uses for public addresses on the EU-2 cluster. If your environment shows another cluster than EU-2 (5.3), the end of the address differs; the address of the first route you create (5.8) shows the right one.
+**Check your cluster.** The allocated environment shows a label such as EU-1 or EU-2 (5.3), and two values depend on it: the address of your instance and the address the platform downloads the images from. Use your cluster in both placeholders. If you are unsure about the address, create the route first (`05-route.yaml` has no placeholders) and read its "Location" under **Networking -> Routes**.
 
 You can deploy in two ways:
 
@@ -301,7 +314,7 @@ It can also explain the files to you, line by line if you like: what each settin
 
 ### 5.8. Paste the configuration
 
-The place to paste is always the same: the **plus-in-circle icon** in the top bar, then **"Import YAML"**.
+The place to paste is always the same: in the dark top navigation bar, on the right, there are four items (a grid of squares, a **plus in a circle**, a question mark, and your name). Click the **plus in a circle**, then **"Import YAML"**.
 
 ```{figure} images/eosc-guide/12-import-yaml.png
 ---
@@ -362,7 +375,7 @@ Your own DraCor, still empty. The footer shows the versions; the suffix "-dirty"
 
 Loading corpora works on your EU Node instance exactly as on a local one; the DraCor Textbook explains it in more detail in [Infrastructure, "Loading a Corpus"](https://dracor-org.github.io/dracor-textbook/chapters/06-infrastructure.html#loading-a-corpus). In short:
 
-Which corpora exist is listed in the [DraCor registry](https://raw.githubusercontent.com/dracor-org/dracor-registry/refs/heads/main/corpora.json): each entry has a `name`, a `title` and the GitHub `repository`. Start with a small one. The test corpus (4 plays) takes about a minute, the Bashkir corpus (3 plays) about one and a half. The largest, the French corpus with about 1,940 plays, took FREDRACOR-TIME on the Small tier.
+Which corpora exist is listed in the [DraCor registry](https://raw.githubusercontent.com/dracor-org/dracor-registry/refs/heads/main/corpora.json): each entry has a `name`, a `title` and the GitHub `repository`. Start with a small one. The test corpus (4 plays) takes about a minute, the Bashkir corpus (3 plays) about one and a half. The largest, the French corpus with about 1,940 plays, took about six hours on the Small tier; during that time the API does not answer.
 
 Loading takes two requests with the administrator password: the first registers the corpus, the second starts the load. In a terminal, set your address first (a short line is less likely to break when you paste it), then send the two requests. `-u admin` makes `curl` ask for the password, so it appears neither in the command nor in your shell history:
 
@@ -425,7 +438,7 @@ If something does not work as described, especially if an agent reports that a s
 ## 7. What You Should Know
 
 * **Resources.** With a small corpus the whole instance uses about 650 MB of memory and less than half a processor core; the Small tier has 8 GB and 2 cores. The platform reserves part of each container's limit, so the configuration sets the limits low enough to leave room.
-* **Large corpora.** Loading is limited by processor time. With the default limits the French corpus took FREDRACOR-TIME. If you need a large corpus quickly, raise the API's CPU limit for the load.
+* **Large corpora.** Loading is limited by processor time. With the default limits the French corpus (about 1,940 plays) took about six hours, and during that time the API did not answer. If you need a large corpus quickly, raise the API's CPU limit before you start the load (a change restarts the API and would interrupt a running load). If your instance must stay usable during a long load, a second, separate API with its own volume can load in the background while the first one keeps serving; you then point the website to the new one. This fits into the Small tier with slightly lower limits; it is not part of the ready-made files yet.
 * **The end date.** When the booked period ends, the project and its data are deleted. Corpora from GitHub can be loaded again in a new project; keep your own data elsewhere. You can extend the period before it ends. And the address stays the same: the address of your instance is built from the name of your personal project, and when you book the Cloud Container Platform again, your personal project gets the same name. So if you deploy again, people who use the address you shared land at your new instance. (Observed in October 2026; platform behaviour can change.)
 * **Security.** Good for a demo, teaching or a project with public data. The administrator password is the only lock on the write functions, so make it long and random. The software is pinned to tested versions and does not update itself. There are no backups and no monitoring.
 

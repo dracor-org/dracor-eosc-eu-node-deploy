@@ -5,6 +5,7 @@
 #
 # Before importing, replace:
 #   REPLACE-WITH-YOUR-HOST     the host of the route "dracor", without https://
+#   REPLACE-WITH-YOUR-CLUSTER  eu-1, eu-2, ... (image proxy of your cluster)
 #
 # Register in Claude Code (note the trailing slash):
 #   claude mcp add --transport http dracor https://REPLACE-WITH-YOUR-HOST/mcp/
@@ -30,7 +31,7 @@ spec:
     spec:
       containers:
         - name: mcp
-          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/dracor/mcp:v1.0.0-alpha.4@sha256:516c35ecf53e3b8502589ccf8e3cd79b0829b162fb070f5582a368751e978283
+          image: registry.REPLACE-WITH-YOUR-CLUSTER.paas.open-science-cloud.ec.europa.eu/base/dracor/mcp:v1.0.0-alpha.4@sha256:516c35ecf53e3b8502589ccf8e3cd79b0829b162fb070f5582a368751e978283
           # short service name is enough here (Python uses the cluster resolver)
           env:
             - name: DRACOR_API_BASE_URL

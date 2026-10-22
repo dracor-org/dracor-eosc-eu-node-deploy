@@ -1,3 +1,4 @@
+# Replace REPLACE-WITH-YOUR-CLUSTER with your cluster (eu-1, eu-2, ...).
 # DraCor frontend: web interface; nginx forwards /api/v1 to the API.
 apiVersion: apps/v1
 kind: Deployment
@@ -21,7 +22,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-frontend-eosc:2.7.1@sha256:ab90490f36f7c7108542224ee2b3630d318f204562f928dd727461a4e1aca5b3
+          image: registry.REPLACE-WITH-YOUR-CLUSTER.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-frontend-eosc:2.7.1@sha256:ab90490f36f7c7108542224ee2b3630d318f204562f928dd727461a4e1aca5b3
           ports:
             - name: http
               containerPort: 8080

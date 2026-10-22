@@ -1,3 +1,4 @@
+# Replace REPLACE-WITH-YOUR-CLUSTER with your cluster (eu-1, eu-2, ...).
 # DraCor API (eXist-db). Needs the Secret "dracor-api" with the key
 # EXIST_PASSWORD, created in the console before this is applied.
 apiVersion: apps/v1
@@ -22,7 +23,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-api-eosc:1.4.1@sha256:c7964977bcc133d6bfc4e0fbe50632677db0cd483986485d9c031fa08326af32
+          image: registry.REPLACE-WITH-YOUR-CLUSTER.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-api-eosc:1.4.1@sha256:c7964977bcc133d6bfc4e0fbe50632677db0cd483986485d9c031fa08326af32
           ports:
             - name: http
               containerPort: 8080

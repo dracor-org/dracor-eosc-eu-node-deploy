@@ -9,8 +9,9 @@ You need an institutional login that gives you credits on the EU Node (the
 Small tier, 2 vCPU and 8 GiB, is enough) and a coding agent such as
 [Claude Code](https://claude.com/claude-code). You click in the platform's
 web console; the agent prepares the files, explains each step and helps when
-something goes wrong. It never sees your password. About 30 minutes, plus
-the time to load corpora.
+something goes wrong. It never sees your password. Plan about an hour for
+a first time (the platform's console takes some getting used to), plus the
+time to load corpora.
 
 ## Start
 

@@ -1,7 +1,8 @@
 # Quick path: the whole DraCor in one paste (Import YAML).
 # Before pasting: create the Secret "dracor-api" with the key EXIST_PASSWORD
 # (Workloads -> Secrets -> Create -> Key/value secret), and replace
-# REPLACE-WITH-YOUR-HOST and REPLACE-WITH-YOUR-PROJECT below. The DNS server
+# REPLACE-WITH-YOUR-HOST, REPLACE-WITH-YOUR-PROJECT and REPLACE-WITH-YOUR-CLUSTER
+# (eu-1, eu-2, ... as shown on your allocated environment) below. The DNS server
 # 172.30.0.10 is the OKD 4 default (see 04-frontend.yaml).
 # Contents: volume, API, metrics, frontend, public address (Route), MCP.
 # Volume for the eXist database: loaded corpora survive pod restarts.
@@ -44,7 +45,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-api-eosc:1.4.1@sha256:c7964977bcc133d6bfc4e0fbe50632677db0cd483986485d9c031fa08326af32
+          image: registry.REPLACE-WITH-YOUR-CLUSTER.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-api-eosc:1.4.1@sha256:c7964977bcc133d6bfc4e0fbe50632677db0cd483986485d9c031fa08326af32
           ports:
             - name: http
               containerPort: 8080
@@ -141,7 +142,7 @@ spec:
     spec:
       containers:
         - name: metrics
-          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-metrics-eosc:1.5.3@sha256:366c6e10648ad07a509a957bf153cfd035f115e32f908706612bf7cc9fa2343c
+          image: registry.REPLACE-WITH-YOUR-CLUSTER.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-metrics-eosc:1.5.3@sha256:366c6e10648ad07a509a957bf153cfd035f115e32f908706612bf7cc9fa2343c
           ports:
             - name: http
               containerPort: 8030
@@ -199,7 +200,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-frontend-eosc:2.7.1@sha256:ab90490f36f7c7108542224ee2b3630d318f204562f928dd727461a4e1aca5b3
+          image: registry.REPLACE-WITH-YOUR-CLUSTER.paas.open-science-cloud.ec.europa.eu/base/ingoboerner/dracor-frontend-eosc:2.7.1@sha256:ab90490f36f7c7108542224ee2b3630d318f204562f928dd727461a4e1aca5b3
           ports:
             - name: http
               containerPort: 8080
@@ -290,7 +291,7 @@ spec:
     spec:
       containers:
         - name: mcp
-          image: registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/dracor/mcp:v1.0.0-alpha.4@sha256:516c35ecf53e3b8502589ccf8e3cd79b0829b162fb070f5582a368751e978283
+          image: registry.REPLACE-WITH-YOUR-CLUSTER.paas.open-science-cloud.ec.europa.eu/base/dracor/mcp:v1.0.0-alpha.4@sha256:516c35ecf53e3b8502589ccf8e3cd79b0829b162fb070f5582a368751e978283
           # short service name is enough here (Python uses the cluster resolver)
           env:
             - name: DRACOR_API_BASE_URL

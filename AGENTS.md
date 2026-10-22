@@ -30,7 +30,10 @@ No. 101129751.
    prepare files, say exactly where to click and what to paste, and read
    what they paste back (pod status, logs, events).
 3. **One thing at a time.** Ask one question per message; give one action
-   per step and wait for the result. Do not ask several things at once.
+   per message and wait until the person says it is done. Keep messages
+   short (a few lines): no list of everything that comes next, no
+   background unless asked. Break console steps into single clicks or
+   single fields (see Step 3 for an example).
 4. **Show the progress table at every step transition** (see "Progress
    table" below).
 5. **Do not invent URLs, menu names or values.** If something in the console
@@ -73,15 +76,52 @@ If one of these does not hold, stop and tell the person what differs.
   booked in the EU Node's web interface, "View externally" opens an OKD 4
   web console.
 * Personal projects are named `pp-<uuid>`, group projects `gp-<uuid>`.
-* Public address of a route named `dracor`:
+* **The cluster is not always EU-2.** The allocated environment shows a
+  cluster label (EU-1, EU-2, ...); in a test on 21 October 2026 a new user
+  got **EU-1**. Everything below was tested on EU-2 only. Always ask for the
+  label (Step 1) and check the two cluster-specific values below.
+* Public address of a route named `dracor` on EU-2:
   `dracor-<project>.eu-2.open-science-cloud-user-apps.eu` (HTTPS, issued
-  by the platform). Other clusters than EU-2 will have another suffix: ask.
-* Cluster DNS server `172.30.0.10` (OKD 4 default).
-* Images are pulled through the platform's proxy
-  `registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/`.
+  by the platform). On another cluster the suffix differs: do not guess it;
+  read it from the platform (see Step 1, point 5).
+* Images are pulled through the platform's proxy, on EU-2
+  `registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/`. On another
+  cluster this prefix may differ or not exist: if a pod shows
+  `ImagePullBackOff`, read the event text and adapt the image prefix (the
+  images are public on Docker Hub, `docker.io/ingoboerner/...` and
+  `docker.io/dracor/mcp`, pinned by digest).
+* Cluster DNS server `172.30.0.10` (OKD 4 default; probably the same on all
+  clusters, check `/etc/resolv.conf` in a pod if the website gives 502).
 * The platform sets each container's requests to 50 % of its CPU limit and
   75 % of its memory limit; the manifests are sized for that.
 * Small tier quota: 2 CPU / 8 GiB limits, 1 CPU / 6 GiB requests.
+
+## Screenshots
+
+The guide's screenshots are in `docs/images/eosc-guide/`. The web console
+is not self-explanatory: in a test on 21 October 2026 a first-time user
+struggled to find the perspective switcher, the Secret form and the Import
+button. So **open the matching screenshot yourself at every console step**,
+before you describe the click (macOS: `open <file>`, Linux:
+`xdg-open <file>`; the terminal itself cannot show images). Say in one
+line what to look for in it ("top right, the plus in a circle"). If the
+person does not want the images, stop opening them.
+
+| Step | Screenshot |
+|---|---|
+| login | `01-login-search.png`, `02-login-saved.png` |
+| access group, credits | `03-overview.png` |
+| booking | `04-ccp-environments.png`, `05-select-period.png`, `06-order-submitted.png`, `07-allocated.png` |
+| console, project | `08-console-login.png`, `09-console-projects.png` |
+| password (Secret) | `10-secrets-create.png`, `11-secret-form.png` |
+| Import YAML | `12-import-yaml.png`, `13-import-result.png` |
+| API log | `14-pod-logs.png` |
+| empty website | `15-dracor-empty.png` |
+
+The other direction works too: tell the person they can paste their own
+screenshot into the conversation (drag the file in, or paste it) when that is
+easier than copying text, for example the pod list or an error. Never a
+screenshot that shows the password (the filled Secret form).
 
 ## Progress table
 
@@ -101,7 +141,12 @@ At every step transition show the six steps with their status, short:
 
 ### Step 0: greeting
 
-Ask how to address the person. Then say, in your own words:
+Start in English. First ask which language the person would like to work in
+(default: English) and how to address them; from then on use that language
+for everything you say. Keep the names of buttons, menus and fields in
+English as the console shows them (e.g. "Import YAML", "Create"), so that the
+person finds them; add a translation in brackets if that helps. Then say, in
+your own words:
 
 > We're going to deploy a DraCor instance together on the Cloud Container
 > Platform of the EOSC EU Node. When we're done, your own DraCor runs on the
@@ -114,16 +159,33 @@ Ask how to address the person. Then say, in your own words:
 > blog post (BLOG-POST-URL).
 
 Ask whether they want a short explanation of DraCor and why an own
-instance helps, or go straight to the deployment. Mention it takes about
-30 minutes plus corpus loading.
+instance helps, or go straight to the deployment. Mention the time
+honestly: for someone who knows the console about 30 minutes; for a first
+time on the platform rather an hour or more, plus corpus loading. The web
+console is not self-explanatory (tested 21 October 2026).
 
 ### Step 1: log in and book the Small tier
 
-1. EU Node: https://open-science-cloud.ec.europa.eu/ -> "Log in via
+1. EU Node: https://open-science-cloud.ec.europa.eu/ -> the login button
+   is at the top right of the page -> "Log in via
    MyAccessID" -> choose the home institution -> institutional login.
+   **First time on the EU Node:** the person is asked to register with the
+   EU Node and to accept its Terms of Service (seen in a test on
+   21 October 2026). Tell them beforehand; the decision to accept is theirs,
+   so suggest they read the terms. Do not summarise the terms as "fine to
+   accept".
+   After that, first-time users get a guided tour of the EU Node; it can be
+   closed (or followed, if they like).
 2. On the landing page, ask them to read out the **access group** (top
    right) and **credits remaining** (bottom left).
    * Investigator or Collaborator: both can book Small (10 credits/day).
+     Collaborator (1,000 credits per 90 days) is enough for this guide.
+     Researchers often land in Collaborator at first; the account then shows
+     a "Request Upgrade" option. It is not needed for DraCor on Small; if the
+     person is faculty and wants Investigator (more credits, group projects),
+     they can use it, but say that the group comes from what their
+     institution reports (see the access policy) and that you do not know
+     how the request is decided.
    * Observer: 0 credits. Do not stop: an Investigator (a supervisor or
      colleague) can invite them into a group project. Explain this route.
    * Source: EOSC EU Node User Access Policy (v2.3.4, April 2026),
@@ -132,37 +194,92 @@ instance helps, or go straight to the deployment. Mention it takes about
    the period (slider, maximum 90 days; credits are deducted at once) ->
    "Submit". Advise to choose the period consciously and to note the end
    date: when it ends, the project and its data are deleted.
-4. Wait for "Allocated environments: Small, Active" (usually minutes) ->
+4. Wait for "Allocated environments: Small, Active" (usually minutes). The
+   card shows "Access expiration: <date>". **Right here, instead of only
+   saying "write that down", ask for that date and offer to create a
+   calendar file with reminders** (see "Calendar reminder" under "At the
+   end" for its content; the address is not known yet, so leave it out or
+   use the predicted host once you have the project name). Then
    "View externally" -> "Log in" -> click the project `pp-...`.
 5. **Ask for the project name** (`pp-...` or `gp-...`). Say why: the
    public address is built from it, so you can fill it into the files before
    the first start. It is not secret (it is part of the public address).
 
-From the project name derive and state:
+Ask which cluster label the allocated environment shows (EU-1, EU-2, ...).
+On EU-2, derive the host from the project name. On any other cluster, find
+the address suffix first: ask the person to open **Networking -> Routes**
+(empty project: no routes yet) or, simplest, create the route
+`05-route.yaml` first, without a host placeholder in it, and read its
+"Location"; the API's `DRACOR_API_BASE` and the MCP route need that host.
+Also check the image prefix (see the platform assumptions).
 
-* host: `dracor-<project>.eu-2.open-science-cloud-user-apps.eu`
+From the project name (and cluster) derive and state:
+
+* host: `dracor-<project>.<cluster>.open-science-cloud-user-apps.eu`, e.g.
+  on EU-2 `dracor-<project>.eu-2.open-science-cloud-user-apps.eu`, on EU-1
+  `...eu-1...` (both domains exist; EU-2 is tested end to end, EU-1 in
+  progress). Confirm with the route's "Location" once it exists.
 * API service name for the frontend:
   `dracor-api.<project>.svc.cluster.local`
 
-### Step 2: explain the images, give the overview
+### Step 1b: a short tour of the console
 
-Briefly explain the images (see "What gets deployed": why adapted, what
-changed, pinned, to be suggested upstream). Offer details from `images/` or
-move on. Then give the six-step overview as the progress table.
+Do this once, right after the person has opened their project in the
+console and before any other console step. Feedback from a first-time user
+(21 October 2026): getting into the EU Node was easy and well explained, but
+the OKD console was too complicated without first being shown around. Show
+the three places they will need, one per message, each with its screenshot
+opened (see "Screenshots"), and wait for "found it":
+
+1. **The view.** Directly below the dark top navigation bar, at the top of
+   the left menu: a wide drop-down box with a gear icon. It should read
+   "Core platform" (switch to it if not). Screenshot: `09-console-projects.png`.
+2. **Where the password goes.** Left menu: **Workloads -> Secrets**. Only
+   look, do not create anything yet. Screenshot: `10-secrets-create.png`.
+3. **Where files are pasted.** In the dark top navigation bar, on the right:
+   the **plus in a circle** (second of four items) -> "Import YAML". Only
+   look. Screenshot: `12-import-yaml.png`.
+
+Mention in one line that **Workloads -> Pods** is where they will check later
+whether everything runs. Then continue.
+
+### Step 2: give the overview (images only on request)
+
+Keep this short: after the project name, the person wants to get going.
+Show the six-step overview as the progress table, and say in one sentence
+that the instance uses slightly adapted copies of the official DraCor images
+(so they run on the platform). Offer the details as an option ("Want to
+know why and what was changed?"); only if they say yes, explain (see "What
+gets deployed": why adapted, what changed, pinned, to be suggested
+upstream) and point to `images/`.
 
 ### Step 3: the password (Secret)
 
-In the console (perspective "Core platform", project selected):
-**Workloads -> Secrets -> Create -> Key/value secret**.
+Go through this in small steps, one per message, and wait for "done" each
+time (tested 21 October 2026: one long message with everything at once was
+too much).
 
-* Secret name: `dracor-api`
-* Key: `EXIST_PASSWORD`
-* Value: a long random password from their password manager.
-
-Tell them: this becomes the database's `admin` password on the first start
-and is needed later to load corpora; keep it in the password manager;
-changing the Secret later does not change it. The form shows the value in
-clear text: no screenshots of the filled form. "Create" is below the fold.
+1. **Find the menu.** Check the perspective: directly below the dark top
+   navigation bar (EU logo on the left), at the top of the left menu, is a
+   wide drop-down box with a gear icon, the "perspective switcher". It
+   usually already reads **"Core platform"**; then nothing needs to be done.
+   If it reads something else (e.g. "Developer"), click it and choose "Core
+   platform". Offer to open `docs/images/eosc-guide/09-console-projects.png`
+   (switcher top left) or point to the guide's section 5.4.
+2. **Open Secrets.** In the left menu: **Workloads -> Secrets** (the project
+   must be selected; a `registry-credentials` Secret is already there, leave
+   it alone). Screenshot: `10-secrets-create.png`.
+3. **Create.** Blue button **Create** (top right) -> **Key/value secret**.
+4. **Name and key.** Secret name: `dracor-api`. Key: `EXIST_PASSWORD`.
+   Screenshot: `11-secret-form.png`.
+5. **Value.** Before they type: the form shows the value in clear text, so
+   no screenshot of the filled form and do not paste it to you. Then: a long
+   random password from their password manager into the large box below
+   "Value"; it becomes the database's `admin` password on the first start,
+   is needed later to load corpora, and changing the Secret later does not
+   change it.
+6. **Save.** Scroll down, click **Create**. Ask them to confirm they see the
+   Secret `dracor-api`.
 
 Optional, explain as optional: Actions -> Edit labels,
 `app.kubernetes.io/part-of=dracor` and `app.kubernetes.io/component=api`.
@@ -177,6 +294,7 @@ it is ignored by git):
 | Placeholder | Value |
 |---|---|
 | `REPLACE-WITH-YOUR-HOST` | the host from Step 1 |
+| `REPLACE-WITH-YOUR-CLUSTER` | the cluster label in lower case, e.g. `eu-1` or `eu-2` (image proxy `registry.<cluster>.paas.open-science-cloud.ec.europa.eu`) |
 | `REPLACE-WITH-YOUR-PROJECT` | the project name |
 | `REPLACE-WITH-NAMESERVER-IP` | `172.30.0.10` (step-by-step files only) |
 
@@ -191,10 +309,14 @@ line on the trade-off:
   each file creates both the Deployment and its Service.
 
 To paste: copy the file to the clipboard for them (`pbcopy < local/<file>` on
-macOS; otherwise tell them which file to open and copy). In the console:
-the **plus-in-circle icon** in the top bar ("Create resources from their
-YAML or JSON definitions") -> "Import YAML" -> paste -> "Create". After each
-import there is an "Import more YAML" link.
+macOS; otherwise tell them which file to open and copy). In the console,
+step by step: in the dark **top navigation bar, on the right**, there are
+four items: a grid of squares, a **plus in a circle**, a question mark, and
+the user name. Click the **plus in a circle** (tooltip "Create resources
+from their YAML or JSON definitions"; tested 21 October 2026: "the top
+circle +" alone was not found) -> "Import YAML" -> paste -> "Create". Offer
+to open `docs/images/eosc-guide/12-import-yaml.png`, where the menu is open.
+After each import there is an "Import more YAML" link.
 
 What they will see, so nothing surprises them:
 
@@ -226,7 +348,17 @@ https://raw.githubusercontent.com/dracor-org/dracor-registry/refs/heads/main/cor
 (fields `name`, `title`, `repository`, `status`, `description`, `license`).
 Offer published corpora; on Small start with a small one. The test corpus
 `test` (4 plays, https://github.com/dracor-org/testdracor) is a good first
-check. Large corpora (e.g. `fre`, about 2,000 plays) take much longer; say so.
+check. Large corpora take much longer; say so before starting: `fre`
+(1,940 plays) took about six hours on Small with the default limits
+(tested 21 October 2026, CPU-bound at the API's 800m limit, memory below
+600 MiB, no restart), and the API answers 502 for the whole time. If the
+person needs it faster, suggest raising the API's CPU limit for the load
+(the quota leaves room up to about 1.3 cores; the change restarts the pod, so
+do it before starting the load).
+If the instance must stay usable during a long load, mention the option of
+a second API with its own volume that loads in the background while the
+first keeps serving, then switching the website's `DRACOR_API_HOST` (fits
+Small with a 600m CPU limit for the second API; no ready-made manifest yet).
 
 Loading takes two requests with the admin password: register the corpus
 (`POST /api/v1/corpora` with name, title, repository, description; licence
@@ -294,6 +426,29 @@ how many plays do they contain?"
 Summarise what runs, the address, the end date of the allocation, and the
 security note below. Suggest they note the address and the end date.
 
+**Calendar reminder.** Offered first in Step 1, as soon as the expiration
+date is known; at the end, offer it again if the person declined then, or
+update it with the instance address. The allocation does not renew itself:
+the platform warns once, five days before the end, and switches the
+instance off at the end date (data are deleted ten days later). Ask for the
+"Access expiration" date shown under "Allocated environments" if you do not
+have it yet, then write `local/dracor-eu-node-allocation.ics` (iCalendar, RFC 5545, CRLF line
+endings) with one all-day event on the expiration date:
+
+* `SUMMARY:` DraCor on the EOSC EU Node: allocation ends
+* `DESCRIPTION:` the instance address, the project name, and what to do:
+  extend the allocation before this date (Cloud Container Platform ->
+  Allocated environments -> the "..." menu), otherwise the instance is
+  switched off today and deleted ten days later
+* `URL:` https://open-science-cloud.ec.europa.eu/
+* two alarms (`VALARM`, `ACTION:DISPLAY`): 7 days and 1 day before
+* a fresh `UID` and `DTSTAMP`
+
+Tell the person where the file is and that opening it adds the event to
+their calendar (on macOS: `open local/dracor-eu-node-allocation.ics`). It
+contains no password and nothing secret. If they extend the allocation
+later, offer to create a new file with the new date.
+
 ### Step 8: feedback
 
 Ask whether they would share how it went: it helps to keep this guide
@@ -309,6 +464,26 @@ the person posts it themselves, you never post on their behalf. Where:
 
 * an issue in this repository: https://github.com/dracor-org/dracor-eosc-eu-node-deploy/issues
 * or the thread about this guide in the EOSC User Forum: FORUM-THREAD-URL
+
+## When something fails after pasting
+
+Tested the hard way on 21 October 2026: after a failed image pull the agent
+asked for the whole file to be pasted again; the objects that already
+existed (volume, services) then failed with "already exists", and the
+project ended up in a state that needed cleaning up. Therefore:
+
+* **Never ask to re-import a file whose objects already exist.** Import YAML
+  only creates; it does not update.
+* **Fix the one broken object in place.** For a wrong image or setting:
+  Workloads -> Deployments -> the deployment -> YAML tab, change only that
+  line, "Save". The pod restarts by itself.
+* **If starting over is really easier,** delete the objects first, in this
+  order, and only those created from this repository: Deployments, then
+  Services, then Routes, then (last, and only with a clear warning that
+  loaded data are lost) the volume `dracor-api-data`. Never delete the
+  project, and never the Secret `registry-credentials`.
+* Before you suggest any of this, say what went wrong and why, in one or
+  two sentences.
 
 ## Troubleshooting
 
