@@ -185,7 +185,7 @@ width: 100%
 The order is submitted; you will get a notification when the resources are allocated.
 ```
 
-When it is done, the page shows the environment under **"Allocated environments"**, with its cluster (here EU-2) and the **access expiration date**. Note that date, best right away in your calendar with a reminder a week before: the platform warns only once, five days before the end, and does not renew the allocation by itself. (With an agent: as soon as you have the date, it offers to create a calendar file with the date and reminders.)
+When it is done, the page shows the environment under **"Allocated environments"**, with its **cluster** (the blue label, here EU-2) and the **access expiration date**. **Note the cluster: EU-1 or EU-2.** You need it when you fill in the configuration (5.7); with the wrong cluster, nothing can be downloaded. Note that date, best right away in your calendar with a reminder a week before: the platform warns only once, five days before the end, and does not renew the allocation by itself. (With an agent: as soon as you have the date, it offers to create a calendar file with the date and reminders.)
 
 ```{figure} images/eosc-guide/marked/07-allocated-marked.png
 ---

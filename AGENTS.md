@@ -49,6 +49,9 @@ No. 101129751.
    (ignored by git). Do not change files outside the repository.
 8. **Be honest about limits.** This is a demo, teaching or project instance
    (see "Security" at the end), not a managed service.
+9. **Never assume the cluster.** Right after the booking, ask whether the
+   allocation is on EU-1 or EU-2 (Step 1, point 5) and use the answer in
+   every file. Without it, do not prepare any configuration.
 
 ## What gets deployed
 
@@ -83,7 +86,8 @@ If one of these does not hold, stop and tell the person what differs.
 * **The cluster differs between users.** The allocated environment shows a
   cluster label (EU-1, EU-2, ...). Two values depend on it, and the guide is
   tested on both **EU-1 and EU-2** (21/22 October 2026). Always ask for the
-  label first (Step 1); a wrong cluster made the first user test fail.
+  label right after booking (Step 1, point 5); a wrong cluster made the
+  first user test fail.
 * Public address of a route named `dracor`:
   `dracor-<project>.<cluster>.open-science-cloud-user-apps.eu`, e.g.
   `...eu-1.open-science-cloud-user-apps.eu` or `...eu-2...` (HTTPS, issued
@@ -200,23 +204,26 @@ console is not self-explanatory (tested 21 October 2026).
    the period (slider, maximum 90 days; credits are deducted at once) ->
    "Submit". Advise to choose the period consciously and to note the end
    date: when it ends, the project and its data are deleted.
-4. Wait for "Allocated environments: Small, Active" (usually minutes). The
-   card shows "Access expiration: <date>". **Right here, instead of only
-   saying "write that down", ask for that date and offer to create a
-   calendar file with reminders** (see "Calendar reminder" under "At the
-   end" for its content; the address is not known yet, so leave it out or
-   use the predicted host once you have the project name). Then
-   "View externally" -> "Log in" -> click the project `pp-...`.
-5. **Ask for the project name** (`pp-...` or `gp-...`). Say why: the
+4. Wait for "Allocated environments: Small, Active" (usually minutes).
+5. **Ask for the cluster: EU-1 or EU-2? This is critical; do it now, before
+   anything else.** The card shows a blue label next to "Active" (EU-1,
+   EU-2, ...). Open `docs/images/eosc-guide/marked/07-allocated-marked.png`,
+   where it is marked, and ask the person to read out their label. Do not
+   assume EU-2 and do not continue without the answer: the cluster decides
+   where the images are downloaded from and how the address ends. A wrong
+   cluster made the first user test fail (images could not be pulled).
+   Note it in lower case (`eu-1`, `eu-2`). If it is neither EU-1 nor EU-2,
+   say that this cluster is untested and use the route-first way (Step 4).
+6. The same card shows "Access expiration: <date>". **Ask for that date and
+   offer to create a calendar file with reminders** (see "Calendar reminder"
+   under "At the end" for its content; the address is not known yet, so
+   leave it out or use the predicted host once you have the project name).
+   Then "View externally" -> "Log in" -> click the project `pp-...`.
+7. **Ask for the project name** (`pp-...` or `gp-...`). Say why: the
    public address is built from it, so you can fill it into the files before
    the first start. It is not secret (it is part of the public address).
 
-Ask which cluster label the allocated environment shows (EU-1, EU-2, ...)
-and offer to open the screenshot `marked/07-allocated-marked.png` (the blue label next to
-"Active"). Note it in lower case (`eu-1`, `eu-2`): it goes into the image
-addresses.
-
-From the project name and cluster derive and state:
+From the project name and the cluster (point 5) derive and state:
 
 * expected host: `dracor-<project>.<cluster>.open-science-cloud-user-apps.eu`.
   It is confirmed in Step 4, when the route exists and shows its
