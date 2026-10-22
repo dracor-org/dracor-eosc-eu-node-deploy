@@ -41,9 +41,10 @@ will follow).
 
 ## Status
 
-Tested on 20 and 21 October 2026 on the EU-2 cluster of the EOSC EU Node,
-Small tier, personal project, with DraCor API 1.4.1, metrics 1.5.3, frontend
-2.7.1 and DraCor MCP 1.0.0-alpha.4. Platform details change; `AGENTS.md`
+Tested on 20 to 22 October 2026 on the EU-1 and EU-2 clusters of the EOSC
+EU Node, Small tier, personal projects, with DraCor API 1.4.1, metrics
+1.5.3, frontend 2.7.1 and DraCor MCP 1.0.0-alpha.4; with Claude Code on
+macOS and Linux, including a new account on a fresh machine. Platform details change; `AGENTS.md`
 lists the assumptions the guide relies on.
 
 Good for a demo, teaching or project instance with public data; see the

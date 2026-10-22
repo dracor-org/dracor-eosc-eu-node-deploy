@@ -16,7 +16,7 @@ license: "CC BY 4.0"
 **Author:** Ingo Börner ([ORCID 0000-0001-8294-2541](https://orcid.org/0000-0001-8294-2541))  
 **Version:** 0.1 (2026-10-21), draft; some screenshots still to come  
 **Review status:** Not reviewed  
-**Tested:** 20 and 21 October 2026, EU-2 cluster, Small tier, personal project  
+**Tested:** 20 to 22 October 2026, EU-1 and EU-2 clusters, Small tier, personal projects; including a new account on a fresh machine  
 **Repository:** [dracor-org/dracor-eosc-eu-node-deploy](https://github.com/dracor-org/dracor-eosc-eu-node-deploy)  
 ```
 
@@ -286,28 +286,28 @@ If you want the agent to load corpora for you later (5.10), you will put the sam
 
 ### 5.7. Fill in your values
 
-The configuration files contain placeholders for the values of your project. From your project name (5.4) you get:
+The configuration files contain placeholders for the values of your project:
 
 | Placeholder | Value | Example |
 |---|---|---|
-| `REPLACE-WITH-YOUR-PROJECT` | your project name | `pp-0123abcd-...` |
 | `REPLACE-WITH-YOUR-CLUSTER` | the cluster shown on your allocated environment (5.3), in lower case | `eu-1` or `eu-2` |
+| `REPLACE-WITH-YOUR-PROJECT` | your project name (5.4) | `pp-0123abcd-...` |
 | `REPLACE-WITH-YOUR-HOST` | `dracor-` + project name + `.` + cluster + `.open-science-cloud-user-apps.eu` | `dracor-pp-0123abcd-....eu-1.open-science-cloud-user-apps.eu` |
 
-**Check your cluster.** The allocated environment shows a label such as EU-1 or EU-2 (5.3), and two values depend on it: the address of your instance and the address the platform downloads the images from. Use your cluster in both placeholders. If you are unsure about the address, create the route first (`05-route.yaml` has no placeholders) and read its "Location" under **Networking -> Routes**.
+**Check your cluster.** The allocated environment shows a label such as EU-1 or EU-2 (5.3). It decides where the platform downloads the images from and how your address ends; with the wrong cluster, the images cannot be downloaded. The address pattern is confirmed on EU-1 and EU-2. On another cluster, create the route first (`05-route.yaml`, no placeholders), read its "Location" under **Networking → Routes**, and use that address; then paste the other files one by one.
 
 You can deploy in two ways:
 
-* **Quick path:** one file, `manifests/dracor-all.yaml`, with everything except the password. Open it in your text editor, replace all placeholders (use "Find and replace"), save. This is fastest; if something fails, it is harder to see which part.
-* **Step by step:** one file per component, `manifests/01-api-pvc.yaml` to `manifests/06-mcp.yaml`. Replace the placeholders in each. In `04-frontend.yaml` replace `REPLACE-WITH-NAMESERVER-IP` with `172.30.0.10` (the platform's internal name server). This takes longer, but you see each part start.
+* **Quick path (recommended):** one file, `manifests/dracor-all.yaml`, with everything except the password. Open it in your text editor, replace all placeholders (use "Find and replace"), save. After pasting, open **Networking → Routes → dracor** and check that its "Location" is the address you filled in.
+* **Step by step:** one file per component, `manifests/01-api-pvc.yaml` to `manifests/06-mcp.yaml`. Replace the placeholders in each; in `04-frontend.yaml` replace `REPLACE-WITH-NAMESERVER-IP` with `172.30.0.10` (the platform's internal name server). This takes longer, but you see each part start.
 
-Before you paste, search the files for `REPLACE-WITH`: nothing should be left.
+Before you paste, search the files for `REPLACE-WITH`: nothing should be left in the values.
 
 Take a moment to read the files before you paste them. It is good practice not to run configuration you have not looked at, and the files are short and commented: you see which images run, which parts are public, how the password is referenced, and how much of your quota each part may use.
 
 ```{admonition} With an agent
 :class: tip
-The agent fills in the values, checks that nothing is left, and copies the file you need next to your clipboard. It asks which of the two ways you prefer.
+The agent asks for your cluster, fills in the values, checks that nothing is left, and copies the file you need to your clipboard (on macOS; on Linux you copy it from your editor). It asks which of the two ways you prefer.
 
 It can also explain the files to you, line by line if you like: what each setting does, why it is there, and what would happen without it. Ask it for a security review before you paste: which parts are public, where the password goes, what runs with which rights. This is also a good way to learn the basics of Kubernetes on a real example.
 ```
@@ -326,7 +326,16 @@ Where configuration files go: the plus-in-circle icon, then "Import YAML".
 
 NEW SCREENSHOT: the Import YAML editor with pasted content and the "Create" button.
 
-Paste the content of the file, click **"Create"**, and the console lists what it created. "Import more YAML" brings you back to the editor for the next file. Step by step, paste in this order: `01-api-pvc`, `02-api`, `03-metrics`, `04-frontend`, `05-route`, `06-mcp`; each file except the first creates two objects (the program and its internal service).
+In the editor that opens:
+
+1. **Click into the editor and select all** (Ctrl+A, on a Mac Cmd+A). The editor may still hold the text of your previous import; if you paste without selecting, the new text is appended and you get errors such as "duplicated mapping key".
+2. **Paste** the content of the file.
+3. **Check the last line.** It must belong to the file; a stray extra line gives "can not read a block mapping entry".
+4. Click **"Create"**. The console lists what it created. "Import more YAML" brings you back to the editor for the next file.
+
+If the editor shows strange text or an old error message that does not go away, reload the page completely (Ctrl+Shift+R, on a Mac Cmd+Shift+R).
+
+If copy and paste gives you trouble (in our test on Ubuntu with Firefox, the pasted text got mixed up), you can try dragging the file from your file manager onto the empty editor; the console accepts dropped YAML files. We have not tested this yet, so check the editor content before you click "Create". Step by step, paste in this order: `01-api-pvc`, `02-api`, `03-metrics`, `04-frontend`, `05-route`, `06-mcp`; each file except the first creates two objects (the program and its internal service).
 
 ```{figure} images/eosc-guide/13-import-result.png
 ---
@@ -412,7 +421,7 @@ NEW SCREENSHOT: an assistant answering a question through the MCP of the new ins
 
 ```{admonition} With an agent
 :class: tip
-The agent registers the server for the repository folder only. The next time you start the agent there, it asks whether you trust the new server; after that it can use your instance.
+The agent registers the server for the repository folder only. Claude Code loads it in a new conversation: in the terminal, quit and start `claude` again in the folder; in VS Code, start a new conversation. It asks once whether you trust the server; `/mcp` shows whether it is connected.
 ```
 
 ### 5.12. Tell us how it went
@@ -431,6 +440,9 @@ If something does not work as described, especially if an agent reports that a s
 | A pod shows `ImagePullBackOff` | The platform cannot download the image. Open the pod's Events tab; the image address may have changed. |
 | A pod restarts during a large load (`OOMKilled` in its events) | The memory limit is too low for that corpus. Raise it in the Deployment (YAML tab, `resources`), within the limits of your tier. |
 | A new pod stays "Pending" after a change | Your tier's quota is used up. Lower the limits elsewhere or remove what you no longer need. |
+| Import YAML: "duplicated mapping key" | The editor still held the previous import and your paste was appended. Click into the editor, select all, paste again. |
+| Import YAML: "can not read a block mapping entry" | A stray line, often the last one. Remove it. |
+| Import YAML: "already exists" | Some objects were already created. Do not paste the whole file again; fix the broken object in its YAML tab, or delete the objects first ("Removing your DraCor" in section 7). |
 | `curl: (2) no URL specified` | A pasted command was split by a line break. Set `H=...` first, as in 5.10. |
 | `/api/v1/info` shows `localhost` as its address | The host was not filled in before the first start; the API stores it once. Delete the volume and start again (loaded corpora are lost). |
 | The corpus request answers 401 | Wrong password, or the user name is not `admin`. |
@@ -441,6 +453,21 @@ If something does not work as described, especially if an agent reports that a s
 * **Large corpora.** Loading is limited by processor time. With the default limits the French corpus (about 1,940 plays) took about six hours, and during that time the API did not answer. If you need a large corpus quickly, raise the API's CPU limit before you start the load (a change restarts the API and would interrupt a running load). If your instance must stay usable during a long load, a second, separate API with its own volume can load in the background while the first one keeps serving; you then point the website to the new one. This fits into the Small tier with slightly lower limits; it is not part of the ready-made files yet.
 * **The end date.** When the booked period ends, the project and its data are deleted. Corpora from GitHub can be loaded again in a new project; keep your own data elsewhere. You can extend the period before it ends. And the address stays the same: the address of your instance is built from the name of your personal project, and when you book the Cloud Container Platform again, your personal project gets the same name. So if you deploy again, people who use the address you shared land at your new instance. (Observed in October 2026; platform behaviour can change.)
 * **Security.** Good for a demo, teaching or a project with public data. The administrator password is the only lock on the write functions, so make it long and random. The software is pinned to tested versions and does not update itself. There are no backups and no monitoring.
+
+### Removing your DraCor
+
+To remove your instance, or to start fresh after a failed attempt, delete its objects in the console. Releasing the allocation is **not** a way to clean up: in our test, releasing and booking again right away left all objects in place.
+
+Delete in this order (each list has a ⋮ menu at the end of every row, with "Delete"):
+
+1. **Workloads → Deployments:** `dracor-api`, `dracor-metrics`, `dracor-frontend`, `dracor-mcp`. Their pods disappear with them.
+2. **Networking → Services:** the four `dracor-...` services.
+3. **Networking → Routes:** `dracor` and `dracor-mcp`.
+4. **Storage → PersistentVolumeClaims:** `dracor-api-data`. This deletes the database with all loaded corpora.
+
+Keep the Secret `registry-credentials`: it belongs to the platform. The Secret `dracor-api` can stay if you want to deploy again with the same password.
+
+If you use the OpenShift command line (`oc`), one command does the same, because all objects carry the label `app.kubernetes.io/part-of=dracor`: `oc delete deployment,service,route,pvc -l app.kubernetes.io/part-of=dracor`. You log in with the command from "Copy login command" in the console's user menu; it contains a personal token, so run it in your own terminal and never paste it into a conversation with an agent.
 
 ## 8. Further Reading and Resources
 

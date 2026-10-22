@@ -4,11 +4,11 @@
 # this public service does not get, so it can only read.
 #
 # Before importing, replace:
-#   REPLACE-WITH-YOUR-HOST     the host of the route "dracor", without https://
-#   REPLACE-WITH-YOUR-CLUSTER  eu-1, eu-2, ... (image proxy of your cluster)
+#   the values marked REPLACE-WITH: the host of the route "dracor" (without
+#   https://) and your cluster (eu-1, eu-2, ...); see the guide, section 5.7
 #
 # Register in Claude Code (note the trailing slash):
-#   claude mcp add --transport http dracor https://REPLACE-WITH-YOUR-HOST/mcp/
+#   claude mcp add --transport http dracor https://<your host>/mcp/
 apiVersion: apps/v1
 kind: Deployment
 metadata:

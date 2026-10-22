@@ -8,9 +8,10 @@ clicks in the platform's web console; you prepare files, explain each step
 and help when something goes wrong.
 
 Developed by Ingo Börner (University of Potsdam) with the help of Claude Opus
-5.5 (Anthropic). Background: BLOG-POST-URL. Tested end to end on
-21 October 2026 with Claude Opus 5.5 in Claude Code; other agents and later
-platform versions may need adjustments.
+5.5 (Anthropic). Background: BLOG-POST-URL. Tested end to end on 21 and
+22 October 2026: on EU-2 with Claude Opus 5.5 in Claude Code (macOS), and on
+EU-1 with a new account on a fresh machine, with Claude Sonnet 5.5 in
+Claude Code in VS Code (Ubuntu, Firefox). Other agents and later platform versions may need adjustments.
 
 Developed in the
 [DraCorOS project](https://oscars-project.eu/projects/dracoros-fostering-open-science-digital-humanities-connecting-dracor-ecosystem-eosc).
@@ -39,8 +40,11 @@ No. 101129751.
 5. **Do not invent URLs, menu names or values.** If something in the console
    looks different from this guide, ask what the person sees.
 6. **Warn before anything irreversible.** Never suggest "Release" on the
-   allocation (it deletes the project and its data at once), deleting the
-   volume, or changing the tier, without an explicit warning and a yes.
+   allocation, deleting the volume, or changing the tier, without an
+   explicit warning and a yes. Note: "Release" ends the allocation, but it
+   is not a way to clean up. In a test on 22 October 2026, releasing and
+   booking again right away kept all objects of the project; to start
+   fresh, delete the objects (see "When something fails after pasting").
 7. **Stay inside this folder.** Write filled-in files only to `local/`
    (ignored by git). Do not change files outside the repository.
 8. **Be honest about limits.** This is a demo, teaching or project instance
@@ -76,22 +80,24 @@ If one of these does not hold, stop and tell the person what differs.
   booked in the EU Node's web interface, "View externally" opens an OKD 4
   web console.
 * Personal projects are named `pp-<uuid>`, group projects `gp-<uuid>`.
-* **The cluster is not always EU-2.** The allocated environment shows a
-  cluster label (EU-1, EU-2, ...); in a test on 21 October 2026 a new user
-  got **EU-1**. Everything below was tested on EU-2 only. Always ask for the
-  label (Step 1) and check the two cluster-specific values below.
-* Public address of a route named `dracor` on EU-2:
-  `dracor-<project>.eu-2.open-science-cloud-user-apps.eu` (HTTPS, issued
-  by the platform). On another cluster the suffix differs: do not guess it;
-  read it from the platform (see Step 1, point 5).
-* Images are pulled through the platform's proxy, on EU-2
-  `registry.eu-2.paas.open-science-cloud.ec.europa.eu/base/`. On another
-  cluster this prefix may differ or not exist: if a pod shows
+* **The cluster differs between users.** The allocated environment shows a
+  cluster label (EU-1, EU-2, ...). Two values depend on it, and the guide is
+  tested on both **EU-1 and EU-2** (21/22 October 2026). Always ask for the
+  label first (Step 1); a wrong cluster made the first user test fail.
+* Public address of a route named `dracor`:
+  `dracor-<project>.<cluster>.open-science-cloud-user-apps.eu`, e.g.
+  `...eu-1.open-science-cloud-user-apps.eu` or `...eu-2...` (HTTPS, issued
+  by the platform). Confirmed on EU-1 and EU-2; compare with the route's
+  "Location" after the import. On another cluster, create the route first
+  and read its "Location" (Step 4).
+* Images are pulled through the platform's proxy
+  `registry.<cluster>.paas.open-science-cloud.ec.europa.eu/base/` (tested on
+  `eu-1` and `eu-2`). On an untested cluster, if a pod shows
   `ImagePullBackOff`, read the event text and adapt the image prefix (the
   images are public on Docker Hub, `docker.io/ingoboerner/...` and
   `docker.io/dracor/mcp`, pinned by digest).
-* Cluster DNS server `172.30.0.10` (OKD 4 default; probably the same on all
-  clusters, check `/etc/resolv.conf` in a pod if the website gives 502).
+* Cluster DNS server `172.30.0.10` (OKD 4 default; works on EU-1 and EU-2;
+  check `/etc/resolv.conf` in a pod if the website gives 502).
 * The platform sets each container's requests to 50 % of its CPU limit and
   75 % of its memory limit; the manifests are sized for that.
 * Small tier quota: 2 CPU / 8 GiB limits, 1 CPU / 6 GiB requests.
@@ -125,7 +131,7 @@ screenshot that shows the password (the filled Secret form).
 
 ## Progress table
 
-At every step transition show the six steps with their status, short:
+At every step transition show the seven steps with their status, short:
 
 ```
 1 Login and booking        done
@@ -205,20 +211,16 @@ console is not self-explanatory (tested 21 October 2026).
    public address is built from it, so you can fill it into the files before
    the first start. It is not secret (it is part of the public address).
 
-Ask which cluster label the allocated environment shows (EU-1, EU-2, ...).
-On EU-2, derive the host from the project name. On any other cluster, find
-the address suffix first: ask the person to open **Networking -> Routes**
-(empty project: no routes yet) or, simplest, create the route
-`05-route.yaml` first, without a host placeholder in it, and read its
-"Location"; the API's `DRACOR_API_BASE` and the MCP route need that host.
-Also check the image prefix (see the platform assumptions).
+Ask which cluster label the allocated environment shows (EU-1, EU-2, ...)
+and offer to open the screenshot `07-allocated.png` (the blue label next to
+"Active"). Note it in lower case (`eu-1`, `eu-2`): it goes into the image
+addresses.
 
-From the project name (and cluster) derive and state:
+From the project name and cluster derive and state:
 
-* host: `dracor-<project>.<cluster>.open-science-cloud-user-apps.eu`, e.g.
-  on EU-2 `dracor-<project>.eu-2.open-science-cloud-user-apps.eu`, on EU-1
-  `...eu-1...` (both domains exist; EU-2 is tested end to end, EU-1 in
-  progress). Confirm with the route's "Location" once it exists.
+* expected host: `dracor-<project>.<cluster>.open-science-cloud-user-apps.eu`.
+  It is confirmed in Step 4, when the route exists and shows its
+  "Location"; use the confirmed one.
 * API service name for the frontend:
   `dracor-api.<project>.svc.cluster.local`
 
@@ -246,7 +248,7 @@ whether everything runs. Then continue.
 ### Step 2: give the overview (images only on request)
 
 Keep this short: after the project name, the person wants to get going.
-Show the six-step overview as the progress table, and say in one sentence
+Show the seven-step overview as the progress table, and say in one sentence
 that the instance uses slightly adapted copies of the official DraCor images
 (so they run on the platform). Offer the details as an option ("Want to
 know why and what was changed?"); only if they say yes, explain (see "What
@@ -288,40 +290,74 @@ finds the Secret by its name.
 
 ### Step 4: files into the console
 
-Fill in the placeholders and write the results to `local/` (create it;
-it is ignored by git):
+Fill in the placeholders and write the results to `local/` (create it; it
+is ignored by git). Replace them only in the YAML values; the comments in
+the files do not contain the placeholder names, so leave them as they are.
 
 | Placeholder | Value |
 |---|---|
-| `REPLACE-WITH-YOUR-HOST` | the host from Step 1 |
+| `REPLACE-WITH-YOUR-HOST` | `dracor-<project>.<cluster>.open-science-cloud-user-apps.eu` (pattern confirmed on EU-1 and EU-2) |
 | `REPLACE-WITH-YOUR-CLUSTER` | the cluster label in lower case, e.g. `eu-1` or `eu-2` (image proxy `registry.<cluster>.paas.open-science-cloud.ec.europa.eu`) |
 | `REPLACE-WITH-YOUR-PROJECT` | the project name |
 | `REPLACE-WITH-NAMESERVER-IP` | `172.30.0.10` (step-by-step files only) |
 
-Check that no `REPLACE-WITH` is left. Then let the person choose, with one
-line on the trade-off:
+Check that no `REPLACE-WITH` is left in the values. Then let the person
+choose, with one line on the trade-off:
 
-* **Quick path:** one paste, `manifests/dracor-all.yaml` (all eleven
-  objects). Fast; if something fails, the error is harder to place.
+* **Quick path (recommended):** one paste, `manifests/dracor-all.yaml`, all
+  eleven objects (volume, API, metrics, website, route, MCP and its route).
+  Right after the import, ask them to open **Networking -> Routes ->
+  dracor** and compare its "Location" with the host you filled in. If they
+  differ, stop and fix the API's `DRACOR_API_BASE` and the MCP route before
+  loading anything (the API stores its address on the first start; if it
+  already started with the wrong one, see Troubleshooting).
 * **Step by step:** `manifests/01` to `06`, one file per component, in this
   order: volume (`01-api-pvc`), API (`02-api`), metrics (`03-metrics`),
-  website (`04-frontend`), address (`05-route`), MCP (`06-mcp`). Tell them
-  each file creates both the Deployment and its Service.
+  website (`04-frontend`), address (`05-route`), MCP (`06-mcp`). Each file
+  except the first creates the Deployment and its Service. Slower; in the
+  test it felt too slow.
+* **On a cluster other than EU-1 or EU-2** (pattern not confirmed): import
+  `05-route.yaml` first (it has no placeholders), read the "Location", use
+  that host, then import the other files one by one (01 to 04, 06). Do not
+  import `dracor-all.yaml` afterwards: it contains the route again, and
+  Import YAML refuses objects that already exist.
 
-To paste: copy the file to the clipboard for them (`pbcopy < local/<file>` on
-macOS; otherwise tell them which file to open and copy). In the console,
-step by step: in the dark **top navigation bar, on the right**, there are
-four items: a grid of squares, a **plus in a circle**, a question mark, and
-the user name. Click the **plus in a circle** (tooltip "Create resources
-from their YAML or JSON definitions"; tested 21 October 2026: "the top
-circle +" alone was not found) -> "Import YAML" -> paste -> "Create". Offer
-to open `docs/images/eosc-guide/12-import-yaml.png`, where the menu is open.
-After each import there is an "Import more YAML" link.
+**Getting the file into the clipboard.** On macOS: `pbcopy < local/<file>`.
+On Linux there is often no clipboard tool (Wayland: `wl-copy`, X11: `xclip`,
+only if installed); otherwise ask the person to open the file from `local/`
+in their editor (in VS Code: click it in the file explorer), select all
+(Ctrl+A / Cmd+A) and copy.
+
+**Pasting, step by step**, one per message:
+
+1. In the dark **top navigation bar, on the right**, there are four items: a
+   grid of squares, a **plus in a circle**, a question mark, and the user
+   name. Click the **plus in a circle** (tooltip "Create resources from
+   their YAML or JSON definitions") -> "Import YAML". Open
+   `docs/images/eosc-guide/12-import-yaml.png` (menu open).
+2. **The editor may still contain text** from the previous import (tested 22
+   October 2026: a new paste was appended, which gave "duplicated mapping
+   key"). So: click into the editor, select all (Ctrl+A / Cmd+A), then paste,
+   so the paste replaces everything.
+3. **Check the last line** before clicking "Create": it must be part of the
+   YAML. A stray extra line (in the test: the project name) gives "can not
+   read a block mapping entry". Delete it.
+4. Click **"Create"**. The console lists what it created. "Import more YAML"
+   brings the editor back for the next file (step 2 applies again).
+
+If the editor shows junk or an old error message that does not go away, a
+hard reload of the page (Ctrl+Shift+R / Cmd+Shift+R) clears it.
+
+**Alternative without the clipboard (untested):** the Import YAML page of
+the OpenShift console accepts files dropped onto the editor. If copy and
+paste causes trouble (in a test on Ubuntu with Firefox the pasted text got
+mixed up), suggest dragging the filled-in file from `local/` in the file
+manager onto the empty editor. Say that this has not been tested on this
+platform yet, and check the editor content as in step 3 before "Create".
 
 What they will see, so nothing surprises them:
 
-* The volume is "Bound" at once; the route is "Accepted" even before its
-  service exists.
+* The volume is "Bound" at once.
 * The API needs one to two minutes. Ready signal in its log: "Server has
   started, listening on". A message "Error on line 1 column 2 of
   configure_9_3.dtd ... SXXP0003" at start is harmless (same in the official
@@ -414,8 +450,11 @@ tools fail.
 For Claude Code, register it **for this folder only**: copy
 `.mcp.json.example` to `.mcp.json` and fill in the host. Keep the trailing
 slash in `https://<host>/mcp/`: without it the server redirects to `http://`
-and the connection fails. On the next start in this folder Claude Code asks
-once whether to trust the server; the tools are available from then on.
+and the connection fails. Claude Code loads MCP servers only when a new
+conversation starts: in the terminal, quit and run `claude` again in this
+folder; in the VS Code extension, start a new conversation (restarting VS
+Code is not needed). Claude Code asks once whether to trust the server;
+`/mcp` then shows it as connected, and the tools are available.
 For other clients: streamable HTTP at `https://<host>/mcp/`.
 
 Test question for the new session: "Which corpora are on this instance, and
@@ -484,11 +523,22 @@ project ended up in a state that needed cleaning up. Therefore:
   project, and never the Secret `registry-credentials`.
 * Before you suggest any of this, say what went wrong and why, in one or
   two sentences.
+* Releasing the allocation and booking again does **not** clean up (tested
+  22 October 2026: all objects were still there). The way to start fresh
+  is deleting the objects in the order above; the guide has the same as
+  "Removing your DraCor". People who use `oc` can delete everything with
+  `oc delete deployment,service,route,pvc -l app.kubernetes.io/part-of=dracor`;
+  the `oc login` command contains a token: they run it themselves, never
+  through you.
 
 ## Troubleshooting
 
 | Symptom | Cause and fix |
 |---|---|
+| Import YAML: "duplicated mapping key" | The editor still held the previous import, and the paste was appended. Click into the editor, Ctrl+A / Cmd+A, paste again. |
+| Import YAML: "can not read a block mapping entry" | A stray line, often the last one (e.g. a project name). Remove it. |
+| Import YAML: "already exists" | Some objects were created before. Do not import the whole file again; see "When something fails after pasting". |
+| Import YAML editor shows junk or an old error | Hard reload of the page (Ctrl+Shift+R / Cmd+Shift+R). |
 | API pod `CreateContainerConfigError` | Secret `dracor-api` or key `EXIST_PASSWORD` missing or misspelled; create it, the pod starts by itself. |
 | API calls give 502 while a corpus loads | Expected: the API is too busy to answer its readiness check and is taken out of service until the load is done. Follow progress in the API pod's log (`LOADING .../tei/<play>.xml`, alphabetical). Harmless messages there: `fuseki: Name or service not known` (Fuseki is not deployed). |
 | Website loads, but API calls give 502 (no load running) | Frontend cannot resolve the API. Check `DRACOR_API_HOST` is the full name `http://dracor-api.<project>.svc.cluster.local:8080`. If it is, the DNS server differs: Terminal of any pod, `cat /etc/resolv.conf`, put the `nameserver` value into `NGINX_RESOLVER`. |

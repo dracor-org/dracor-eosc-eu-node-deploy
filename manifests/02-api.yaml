@@ -1,4 +1,4 @@
-# Replace REPLACE-WITH-YOUR-CLUSTER with your cluster (eu-1, eu-2, ...).
+# Fill in the values marked REPLACE-WITH (see the guide, section 5.7).
 # DraCor API (eXist-db). Needs the Secret "dracor-api" with the key
 # EXIST_PASSWORD, created in the console before this is applied.
 apiVersion: apps/v1

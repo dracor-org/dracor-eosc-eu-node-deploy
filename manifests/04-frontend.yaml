@@ -1,4 +1,4 @@
-# Replace REPLACE-WITH-YOUR-CLUSTER with your cluster (eu-1, eu-2, ...).
+# Fill in the values marked REPLACE-WITH (see the guide, section 5.7).
 # DraCor frontend: web interface; nginx forwards /api/v1 to the API.
 apiVersion: apps/v1
 kind: Deployment

@@ -1,4 +1,4 @@
-# Replace REPLACE-WITH-YOUR-CLUSTER with your cluster (eu-1, eu-2, ...).
+# Fill in the values marked REPLACE-WITH (see the guide, section 5.7).
 # DraCor metrics: network metrics service, used by the API. Stateless.
 apiVersion: apps/v1
 kind: Deployment

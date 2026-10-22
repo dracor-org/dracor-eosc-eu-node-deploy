@@ -1,9 +1,10 @@
 # Quick path: the whole DraCor in one paste (Import YAML).
-# Before pasting: create the Secret "dracor-api" with the key EXIST_PASSWORD
-# (Workloads -> Secrets -> Create -> Key/value secret), and replace
-# REPLACE-WITH-YOUR-HOST, REPLACE-WITH-YOUR-PROJECT and REPLACE-WITH-YOUR-CLUSTER
-# (eu-1, eu-2, ... as shown on your allocated environment) below. The DNS server
-# 172.30.0.10 is the OKD 4 default (see 04-frontend.yaml).
+# Before pasting: create the Secret "dracor-api" (key EXIST_PASSWORD) in the
+# console form, and fill in the values marked REPLACE-WITH (host, project,
+# cluster): see the table in AGENTS.md or in the guide, section 5.7. The host
+# follows the pattern dracor-<project>.<cluster>.open-science-cloud-user-apps.eu
+# (confirmed on EU-1 and EU-2); after importing, compare it with the route's
+# "Location". The DNS server 172.30.0.10 is the OKD 4 default.
 # Contents: volume, API, metrics, frontend, public address (Route), MCP.
 # Volume for the eXist database: loaded corpora survive pod restarts.
 apiVersion: v1

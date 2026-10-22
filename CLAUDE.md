@@ -16,4 +16,8 @@
 * Commands the person should run in this session start with `!`. Anything
   that involves typing the password goes into a separate terminal, never
   through `!`, since its input and output land in the conversation.
-* For the clipboard on macOS use `pbcopy < local/<file>`.
+* For the clipboard on macOS use `pbcopy < local/<file>`. On Linux there is
+  often no clipboard tool: ask the person to open the file in their editor
+  and copy it from there.
+* In the VS Code extension, a newly registered MCP server appears in a new
+  conversation; `/mcp` shows whether it is connected.
