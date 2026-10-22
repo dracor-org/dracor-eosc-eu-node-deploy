@@ -104,7 +104,7 @@ If one of these does not hold, stop and tell the person what differs.
 
 ## Screenshots
 
-The guide's screenshots are in `docs/images/eosc-guide/`. The web console
+The guide's screenshots are in `docs/images/eosc-guide/`; for the four hardest spots there are copies with red boxes and step numbers in `docs/images/eosc-guide/marked/` (cluster label, view switcher, Workloads -> Secrets -> Key/value secret, plus -> Import YAML). Prefer the marked copy where one exists. The web console
 is not self-explanatory: in a test on 21 October 2026 a first-time user
 struggled to find the perspective switcher, the Secret form and the Import
 button. So **open the matching screenshot yourself at every console step**,
@@ -117,10 +117,10 @@ person does not want the images, stop opening them.
 |---|---|
 | login | `01-login-search.png`, `02-login-saved.png` |
 | access group, credits | `03-overview.png` |
-| booking | `04-ccp-environments.png`, `05-select-period.png`, `06-order-submitted.png`, `07-allocated.png` |
-| console, project | `08-console-login.png`, `09-console-projects.png` |
-| password (Secret) | `10-secrets-create.png`, `11-secret-form.png` |
-| Import YAML | `12-import-yaml.png`, `13-import-result.png` |
+| booking | `04-ccp-environments.png`, `05-select-period.png`, `06-order-submitted.png`, `marked/07-allocated-marked.png` |
+| console, project | `08-console-login.png`, `marked/09-console-projects-marked.png` |
+| password (Secret) | `marked/10-secrets-create-marked.png`, `11-secret-form.png` |
+| Import YAML | `marked/12-import-yaml-marked.png`, `13-import-result.png` |
 | API log | `14-pod-logs.png` |
 | empty website | `15-dracor-empty.png` |
 
@@ -212,7 +212,7 @@ console is not self-explanatory (tested 21 October 2026).
    the first start. It is not secret (it is part of the public address).
 
 Ask which cluster label the allocated environment shows (EU-1, EU-2, ...)
-and offer to open the screenshot `07-allocated.png` (the blue label next to
+and offer to open the screenshot `marked/07-allocated-marked.png` (the blue label next to
 "Active"). Note it in lower case (`eu-1`, `eu-2`): it goes into the image
 addresses.
 
@@ -235,12 +235,12 @@ opened (see "Screenshots"), and wait for "found it":
 
 1. **The view.** Directly below the dark top navigation bar, at the top of
    the left menu: a wide drop-down box with a gear icon. It should read
-   "Core platform" (switch to it if not). Screenshot: `09-console-projects.png`.
+   "Core platform" (switch to it if not). Screenshot: `marked/09-console-projects-marked.png`.
 2. **Where the password goes.** Left menu: **Workloads -> Secrets**. Only
-   look, do not create anything yet. Screenshot: `10-secrets-create.png`.
+   look, do not create anything yet. Screenshot: `marked/10-secrets-create-marked.png`.
 3. **Where files are pasted.** In the dark top navigation bar, on the right:
    the **plus in a circle** (second of four items) -> "Import YAML". Only
-   look. Screenshot: `12-import-yaml.png`.
+   look. Screenshot: `marked/12-import-yaml-marked.png`.
 
 Mention in one line that **Workloads -> Pods** is where they will check later
 whether everything runs. Then continue.
@@ -266,11 +266,11 @@ too much).
    wide drop-down box with a gear icon, the "perspective switcher". It
    usually already reads **"Core platform"**; then nothing needs to be done.
    If it reads something else (e.g. "Developer"), click it and choose "Core
-   platform". Offer to open `docs/images/eosc-guide/09-console-projects.png`
+   platform". Offer to open `docs/images/eosc-guide/marked/09-console-projects-marked.png`
    (switcher top left) or point to the guide's section 5.4.
 2. **Open Secrets.** In the left menu: **Workloads -> Secrets** (the project
    must be selected; a `registry-credentials` Secret is already there, leave
-   it alone). Screenshot: `10-secrets-create.png`.
+   it alone). Screenshot: `marked/10-secrets-create-marked.png`.
 3. **Create.** Blue button **Create** (top right) -> **Key/value secret**.
 4. **Name and key.** Secret name: `dracor-api`. Key: `EXIST_PASSWORD`.
    Screenshot: `11-secret-form.png`.
@@ -334,7 +334,7 @@ in their editor (in VS Code: click it in the file explorer), select all
    grid of squares, a **plus in a circle**, a question mark, and the user
    name. Click the **plus in a circle** (tooltip "Create resources from
    their YAML or JSON definitions") -> "Import YAML". Open
-   `docs/images/eosc-guide/12-import-yaml.png` (menu open).
+   `docs/images/eosc-guide/marked/12-import-yaml-marked.png` (menu open).
 2. **The editor may still contain text** from the previous import (tested 22
    October 2026: a new paste was appended, which gave "duplicated mapping
    key"). So: click into the editor, select all (Ctrl+A / Cmd+A), then paste,
@@ -524,7 +524,10 @@ project ended up in a state that needed cleaning up. Therefore:
 * Before you suggest any of this, say what went wrong and why, in one or
   two sentences.
 * Releasing the allocation and booking again does **not** clean up (tested
-  22 October 2026: all objects were still there). The way to start fresh
+  22 October 2026: all objects were still there). Objects are deleted only
+  after an allocation has ended and was not renewed (policy: ten days after
+  the end; observed: an allocation that ran out over the summer was empty
+  when booked again months later). The way to start fresh
   is deleting the objects in the order above; the guide has the same as
   "Removing your DraCor". People who use `oc` can delete everything with
   `oc delete deployment,service,route,pvc -l app.kubernetes.io/part-of=dracor`;

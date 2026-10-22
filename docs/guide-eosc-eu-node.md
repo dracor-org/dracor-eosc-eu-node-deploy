@@ -187,12 +187,12 @@ The order is submitted; you will get a notification when the resources are alloc
 
 When it is done, the page shows the environment under **"Allocated environments"**, with its cluster (here EU-2) and the **access expiration date**. Note that date, best right away in your calendar with a reminder a week before: the platform warns only once, five days before the end, and does not renew the allocation by itself. (With an agent: as soon as you have the date, it offers to create a calendar file with the date and reminders.)
 
-```{figure} images/eosc-guide/07-allocated.png
+```{figure} images/eosc-guide/marked/07-allocated-marked.png
 ---
 alt: "Allocated environments: Small, Active, EU-2, access expiration date, and the button View externally."
 width: 100%
 ---
-The allocated environment. "View externally" opens the platform's web console.
+The allocated environment. The blue label (here EU-2) is your cluster; "View externally" opens the platform's web console.
 ```
 
 ### 5.4. Open the web console and find your project
@@ -209,7 +209,7 @@ The entrance to the web console.
 
 The console shows your **projects**. A personal project is called `pp-` followed by a long identifier, a group project `gp-...`. Click your new project and **note its name**: you need it in the next steps. It is not secret; the public address of your DraCor is built from it.
 
-```{figure} images/eosc-guide/09-console-projects.png
+```{figure} images/eosc-guide/marked/09-console-projects-marked.png
 ---
 alt: "Project list in the web console with a personal project, created just now."
 width: 100%
@@ -252,7 +252,7 @@ The DraCor API stores its corpora in a database with an administrator password. 
 
 In the console go to **Workloads → Secrets**, then **Create → Key/value secret**.
 
-```{figure} images/eosc-guide/10-secrets-create.png
+```{figure} images/eosc-guide/marked/10-secrets-create-marked.png
 ---
 alt: "The Create menu on the Secrets page with the entry Key/value secret."
 width: 100%
@@ -316,7 +316,7 @@ It can also explain the files to you, line by line if you like: what each settin
 
 The place to paste is always the same: in the dark top navigation bar, on the right, there are four items (a grid of squares, a **plus in a circle**, a question mark, and your name). Click the **plus in a circle**, then **"Import YAML"**.
 
-```{figure} images/eosc-guide/12-import-yaml.png
+```{figure} images/eosc-guide/marked/12-import-yaml-marked.png
 ---
 alt: "The plus-in-circle icon in the top bar with its menu: Import YAML, Import from Git, Container images."
 width: 100%
@@ -456,7 +456,7 @@ If something does not work as described, especially if an agent reports that a s
 
 ### Removing your DraCor
 
-To remove your instance, or to start fresh after a failed attempt, delete its objects in the console. Releasing the allocation is **not** a way to clean up: in our test, releasing and booking again right away left all objects in place.
+To remove your instance, or to start fresh after a failed attempt, delete its objects in the console. Releasing the allocation is **not** a quick way to clean up: in our test, releasing and booking again right away left all objects in place. They are deleted only when an allocation has ended and is not renewed: according to the access policy ten days after the end, and in our experience an expired allocation was indeed empty when booked again months later.
 
 Delete in this order (each list has a ⋮ menu at the end of every row, with "Delete"):
 
