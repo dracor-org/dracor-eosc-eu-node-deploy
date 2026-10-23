@@ -120,13 +120,15 @@ person does not want the images, stop opening them.
 | Step | Screenshot |
 |---|---|
 | login | `01-login-search.png`, `02-login-saved.png` |
-| access group, credits | `03-overview.png` |
-| booking | `04-ccp-environments.png`, `05-select-period.png`, `06-order-submitted.png`, `marked/07-allocated-marked.png` |
-| console, project | `08-console-login.png`, `marked/09-console-projects-marked.png` |
+| access group, credits | `03-overview.png`; first login as Collaborator: `03a-welcome-collaborator.png` |
+| booking, cluster | `04-ccp-environments.png`, `05-select-period.png`, `06-order-submitted.png`, `marked/07-allocated-marked.png` |
+| console, project, view | `08-console-login.png`, `marked/09-console-projects-marked.png`; wrong view: `09a-developer-view.png` |
 | password (Secret) | `marked/10-secrets-create-marked.png`, `11-secret-form.png` |
-| Import YAML | `marked/12-import-yaml-marked.png`, `13-import-result.png` |
-| API log | `14-pod-logs.png` |
-| empty website | `15-dracor-empty.png` |
+| Import YAML | `marked/12-import-yaml-marked.png`, `13a-import-yaml-editor.png`, `13-import-result.png` |
+| check the address | `07a-route-location.png` |
+| pods, API log | `14a-pods-running.png`, `14b-topology.png`, `14-pod-logs.png`; during a corpus load: `14c-api-loading-log.png` |
+| website | `15-dracor-empty.png`, with corpora: `15a-dracor-corpora.png` |
+| errors | `16a-imagepullbackoff.png` (wrong cluster), `16b-already-exists.png` (pasted twice) |
 
 The other direction works too: tell the person they can paste their own
 screenshot into the conversation (drag the file in, or paste it) when that is

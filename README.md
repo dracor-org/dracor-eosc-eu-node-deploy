@@ -26,8 +26,7 @@ it through [CLAUDE.md](CLAUDE.md). Other agents that read `AGENTS.md` should
 work as well, but were not tested.
 
 Without an agent: follow the step-by-step guide
-[docs/guide-eosc-eu-node.md](docs/guide-eosc-eu-node.md) (draft; some screenshots
-will follow).
+[docs/guide-eosc-eu-node.md](docs/guide-eosc-eu-node.md) (draft).
 
 ## What is in here
 

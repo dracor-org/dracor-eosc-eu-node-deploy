@@ -14,7 +14,7 @@ license: "CC BY 4.0"
 :class: tip
 
 **Author:** Ingo Börner ([ORCID 0000-0001-8294-2541](https://orcid.org/0000-0001-8294-2541))  
-**Version:** 0.1 (2026-10-21), draft; some screenshots still to come  
+**Version:** 0.1 (2026-10-21), draft  
 **Review status:** Not reviewed  
 **Tested:** 20 to 22 October 2026, EU-1 and EU-2 clusters, Small tier, personal projects; including a new account on a fresh machine  
 **Repository:** [dracor-org/dracor-eosc-eu-node-deploy](https://github.com/dracor-org/dracor-eosc-eu-node-deploy)  
@@ -23,7 +23,7 @@ license: "CC BY 4.0"
 ```{note}
 **How to use this guide:** The guide takes you through the whole deployment, from the first login to a running DraCor with a corpus of your choice. You can follow it **on your own**: the configuration files are ready in the repository, and you only fill in a few values. Or you work **together with a coding agent** (an AI assistant that works in your terminal, reads and writes files and runs commands with your approval; we used Claude Code): the agent fills in the values, explains each step and helps when something goes wrong; boxes marked "With an agent" say where it takes over. The steps on the platform itself (logging in, booking, clicking in the web console, creating the password) are always yours.
 
-**Draft:** a few screenshots are still missing (marked NEW SCREENSHOT) and will follow.
+**Draft:** this guide is new; please tell us where it is unclear (5.12).
 ```
 
 ## 1. Overview
@@ -115,8 +115,6 @@ Open [open-science-cloud.ec.europa.eu](https://open-science-cloud.ec.europa.eu/)
 
 If this is your first time on the EU Node, you are asked to register and to accept the EU Node's Terms of Service before you continue. Take a moment to read them; registration is needed only once. After that, the EU Node offers a short guided tour; you can follow it or close it.
 
-NEW SCREENSHOT: the registration page with the Terms of Service (first login).
-
 ```{figure} images/eosc-guide/01-login-search.png
 ---
 alt: "Login page of the EOSC EU Node with the search field for the home institution."
@@ -148,6 +146,14 @@ The account overview. Top right: your name and access group. Bottom left: remain
 ```
 
 If you are a **Collaborator**, everything in this guide works: 1,000 credits per 90 days are more than enough for a DraCor on the Small tier. Your account may show a **"Request Upgrade"** option to become an Investigator (more credits, all tiers, group projects); you do not need it for this guide.
+
+```{figure} images/eosc-guide/03a-welcome-collaborator.png
+---
+alt: "The EU Node's welcome dialog for a new user: Welcome, Collaborator, 1,000 credits available, what you can do, and the buttons Request Access Upgrade and OK."
+width: 100%
+---
+On the first login the EU Node shows your access level. As a Collaborator you have 1,000 credits, enough for this guide.
+```
 
 If you are an Observer, you have no credits of your own; the way forward is a group project of a colleague with Investigator status (see 4.1).
 
@@ -222,6 +228,14 @@ The project list. Your new personal project appears with "Created: Just now".
 The web console of the platform is powerful but not self-explanatory. Before you start, find the three places you will need; nothing is created yet.
 
 1. **The view.** Directly below the dark top navigation bar, at the top of the left menu, is a wide drop-down box with a gear icon. It should read **"Core platform"** (see the screenshot above, top left). If it shows something else, such as "Developer", click it and choose "Core platform".
+
+```{figure} images/eosc-guide/09a-developer-view.png
+---
+alt: "The web console in the Developer view: the drop-down box at the top left reads Developer, and the menu shows +Add, Topology, Observe and Search."
+width: 100%
+---
+If the box shows "Developer", the menu looks different. Click the box and choose "Core platform".
+```
 2. **Where the password goes.** In the left menu, open **Workloads**, then **Secrets** (see 5.6). There is already a Secret called `registry-credentials`; it belongs to the platform, leave it alone.
 3. **Where configuration files are pasted.** In the dark top navigation bar, on the right, are four items: a grid of squares, a **plus in a circle**, a question mark, and your name. The plus opens a menu with **"Import YAML"** (see 5.8).
 
@@ -243,7 +257,13 @@ The configuration files are in the folder `manifests/`.
 :class: tip
 Start the agent in the repository folder (for Claude Code: `claude`) and say hello. The agent asks which language you want to work in (English by default), introduces itself, asks for your project name and shows an overview of the steps; it keeps showing where you are at every step. It fills in the values for you (5.7) and writes the results into a folder `local/`.
 
-NEW SCREENSHOT: the agent's greeting and the progress table in the terminal.
+```{figure} images/eosc-guide/05a-agent-greeting.png
+---
+alt: "The start of a session with Claude Code in the terminal: the greeting, the question about the language, a switch to German, and the time estimate."
+width: 100%
+---
+The start of a session with the agent: it asks for the language first (here German; button names stay in English) and how to address you.
+```
 ```
 
 ### 5.6. Create the database password
@@ -299,6 +319,14 @@ The configuration files contain placeholders for the values of your project:
 You can deploy in two ways:
 
 * **Quick path (recommended):** one file, `manifests/dracor-all.yaml`, with everything except the password. Open it in your text editor, replace all placeholders (use "Find and replace"), save. After pasting, open **Networking → Routes → dracor** and check that its "Location" is the address you filled in.
+
+```{figure} images/eosc-guide/07a-route-location.png
+---
+alt: "Details of the route dracor: Location and Host show the address of the instance (hidden here), the status is Accepted."
+width: 100%
+---
+The route "dracor" under Networking → Routes. "Location" is the address of your instance.
+```
 * **Step by step:** one file per component, `manifests/01-api-pvc.yaml` to `manifests/06-mcp.yaml`. Replace the placeholders in each; in `04-frontend.yaml` replace `REPLACE-WITH-NAMESERVER-IP` with `172.30.0.10` (the platform's internal name server). This takes longer, but you see each part start.
 
 Before you paste, search the files for `REPLACE-WITH`: nothing should be left in the values.
@@ -324,7 +352,13 @@ width: 100%
 Where configuration files go: the plus-in-circle icon, then "Import YAML".
 ```
 
-NEW SCREENSHOT: the Import YAML editor with pasted content and the "Create" button.
+```{figure} images/eosc-guide/13a-import-yaml-editor.png
+---
+alt: "The Import YAML editor with a pasted configuration file and the buttons Create and Cancel below it."
+width: 100%
+---
+The Import YAML editor with a pasted file. Check the last line before you click "Create".
+```
 
 In the editor that opens:
 
@@ -347,7 +381,13 @@ After each paste the console lists the created objects.
 
 Now check the pods: **Workloads → Pods**. The database needs one to two minutes to start; everything is ready when all four pods show **Running** and **1/1**.
 
-NEW SCREENSHOT: the pod list with all four pods (api, metrics, frontend, mcp) at Running 1/1.
+```{figure} images/eosc-guide/14a-pods-running.png
+---
+alt: "The Pods list with dracor-api, dracor-frontend, dracor-mcp and dracor-metrics, all Running and Ready 1/1."
+width: 100%
+---
+All four parts are running: Status "Running" and Ready "1/1".
+```
 
 If a pod does not start, open it and look at its **Logs** or **Events** tab; section 6 lists the usual causes.
 
@@ -361,7 +401,13 @@ The log of the API pod. "Server has started, listening on" means the database is
 
 **Workloads → Topology** shows all parts of your DraCor at a glance. The small arrow on the website's node opens your instance.
 
-NEW SCREENSHOT: Topology with the four nodes, including the MCP.
+```{figure} images/eosc-guide/14b-topology.png
+---
+alt: "Topology view with four round nodes: dracor-api, dracor-metrics, dracor-mcp and dracor-frontend, grouped as the application dracor."
+width: 100%
+---
+Topology: the four parts of your DraCor. The small arrow at the top right of the website's node opens your instance.
+```
 
 ```{admonition} With an agent
 :class: tip
@@ -398,7 +444,21 @@ For another corpus, use its `name`, `title` and `repository` from the registry. 
 
 While a large corpus loads, the API is busy: the website shows errors when it asks for data, and the API pod shows "0/1". That is expected; its log shows the progress, play by play (`LOADING .../tei/<play>.xml`).
 
-NEW SCREENSHOT: the DraCor website with the loaded corpora.
+```{figure} images/eosc-guide/14c-api-loading-log.png
+---
+alt: "The Logs tab of the API pod while a corpus loads: lines with LOADING, Metrics update and RDF update for single plays, and at the end ger LOADED."
+width: 100%
+---
+The API's log during a large load: one play after another, and at the end "LOADED". The messages about Fuseki are harmless.
+```
+
+```{figure} images/eosc-guide/15a-dracor-corpora.png
+---
+alt: "The DraCor start page of the test instance with four corpus cards: French, German, Test and Bashkir Drama Corpus, with their numbers of plays."
+width: 100%
+---
+The same instance after loading corpora.
+```
 
 ```{admonition} With an agent
 :class: tip
@@ -416,8 +476,6 @@ claude mcp add --transport http dracor-eosc https://<your host>/mcp/
 ```
 
 Other assistants that support MCP over HTTP take the same address. Then ask a question about your own instance, for example: "Which corpora are on this instance, and how many plays do they contain?"
-
-NEW SCREENSHOT: an assistant answering a question through the MCP of the new instance.
 
 ```{admonition} With an agent
 :class: tip
@@ -446,6 +504,22 @@ If something does not work as described, especially if an agent reports that a s
 | `curl: (2) no URL specified` | A pasted command was split by a line break. Set `H=...` first, as in 5.10. |
 | `/api/v1/info` shows `localhost` as its address | The host was not filled in before the first start; the API stores it once. Delete the volume and start again (loaded corpora are lost). |
 | The corpus request answers 401 | Wrong password, or the user name is not `admin`. |
+
+```{figure} images/eosc-guide/16a-imagepullbackoff.png
+---
+alt: "The Pods list with four DraCor pods in the status ImagePullBackOff or ErrImagePull, all at 0/1."
+width: 100%
+---
+"ImagePullBackOff": the platform cannot download the images. In our test the cluster was wrong (EU-2 in the files, EU-1 in reality).
+```
+
+```{figure} images/eosc-guide/16b-already-exists.png
+---
+alt: "The Import YAML result page: One or more resources failed to be created, with already exists errors for the volume, deployments and services."
+width: 100%
+---
+"already exists": the file was pasted a second time. Do not paste it again; fix the broken object or delete the objects first.
+```
 
 ## 7. What You Should Know
 
