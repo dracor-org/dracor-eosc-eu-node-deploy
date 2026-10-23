@@ -511,7 +511,7 @@ Leave out passwords, and anything they do not want to share. Show the draft;
 the person posts it themselves, you never post on their behalf. Where:
 
 * an issue in this repository: https://github.com/dracor-org/dracor-eosc-eu-node-deploy/issues
-* or the thread about this guide in the EOSC User Forum: FORUM-THREAD-URL
+* or the thread about this guide in the EOSC User Forum: [DraCorOS use case](https://user-forum.eosc.eu/t/dracoros-use-case-your-own-dracor-on-the-eosc-eu-node-cloud-container-platform/168)
 
 ## When something fails after pasting
 

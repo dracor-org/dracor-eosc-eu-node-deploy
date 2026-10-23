@@ -376,7 +376,7 @@ Other assistants that support MCP over HTTP take the same address. Then ask a qu
 
 ### 5.12. Tell us how it went
 
-Did you deploy your own DraCor? Tell us in the thread about this guide in the EOSC User Forum (FORUM-THREAD-URL): that you did it, what worked, where you got stuck, how long it took. The forum is the main place for feedback; platforms change, and every report helps to keep the guide working and shows how the EU Node is used.
+Did you deploy your own DraCor? Tell us in the [thread about this guide in the EOSC User Forum](https://user-forum.eosc.eu/t/dracoros-use-case-your-own-dracor-on-the-eosc-eu-node-cloud-container-platform/168): that you did it, what worked, where you got stuck, how long it took. The forum is the main place for feedback; platforms change, and every report helps to keep the guide working and shows how the EU Node is used.
 
 If something does not work as described, especially if an agent reports that a step behaves differently than expected, please also open an [issue in the repository](https://github.com/dracor-org/dracor-eosc-eu-node-deploy/issues). An agent offers to draft such a report at the end of the session.
 

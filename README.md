@@ -54,8 +54,7 @@ security notes at the end of `AGENTS.md`.
 Tried it? Please tell us how it went, whether it worked or where it got
 stuck: open an
 [issue](https://github.com/dracor-org/dracor-eosc-eu-node-deploy/issues) or
-post in the thread about this guide in the EOSC User Forum
-(FORUM-THREAD-URL). At the end of a session the agent offers to draft a short
+post in the [thread about this guide in the EOSC User Forum](https://user-forum.eosc.eu/t/dracoros-use-case-your-own-dracor-on-the-eosc-eu-node-cloud-container-platform/168). At the end of a session the agent offers to draft a short
 report for you. Every run on another account or cluster shows whether the
 guide still matches the platform.
 
