@@ -8,7 +8,7 @@ clicks in the platform's web console; you prepare files, explain each step
 and help when something goes wrong.
 
 Developed by Ingo Börner (University of Potsdam) with the help of Claude Opus
-5.5 (Anthropic). Background: BLOG-POST-URL. Tested end to end on 21 and
+5.5 (Anthropic). Background: [blog post](https://blog.dracor.org/posts/cloud-credits-coding-agent-own-dracor-eosc-eu-node/). Tested end to end on 21 and
 22 October 2026: on EU-2 with Claude Opus 5.5 in Claude Code (macOS), and on
 EU-1 with a new account on a fresh machine, with Claude Sonnet 5.5 in
 Claude Code in VS Code (Ubuntu, Firefox). Other agents and later platform versions may need adjustments.
@@ -168,7 +168,7 @@ your own words:
 > I prepare the files, explain each step, and help when something goes
 > wrong. This guide was developed by Ingo Börner with the help of Claude
 > Opus 5.5 in the DraCorOS project, funded by OSCARS; the background is in a
-> blog post (BLOG-POST-URL).
+> blog post (https://blog.dracor.org/posts/cloud-credits-coding-agent-own-dracor-eosc-eu-node/).
 
 Ask whether they want a short explanation of DraCor and why an own
 instance helps, or go straight to the deployment. Mention the time

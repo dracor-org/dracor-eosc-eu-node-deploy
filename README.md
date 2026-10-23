@@ -63,7 +63,7 @@ guide still matches the platform.
 
 Developed by [Ingo Börner](https://orcid.org/0000-0001-8294-2541)
 (University of Potsdam) with the help of Claude Opus 5.5 (Anthropic).
-Background: BLOG-POST-URL.
+Background: [blog post](https://blog.dracor.org/posts/cloud-credits-coding-agent-own-dracor-eosc-eu-node/).
 
 DraCor is developed by the DraCor team and contributors at
 [dracor-org](https://github.com/dracor-org); the images here are built on

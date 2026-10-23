@@ -28,7 +28,7 @@ license: "CC BY 4.0"
 
 Your own instance is useful for teaching, for a project, for a corpus that is not on dracor.org yet, or for a fixed version of the data that does not change while you write. But an instance on your laptop is not on the web: colleagues, students or reviewers cannot open it.
 
-This is where the [European Open Science Cloud (EOSC)](https://eosc.eu/) comes in. EOSC is a federation of nodes that offer services for researchers; one of them is the [EOSC EU Node](https://open-science-cloud.ec.europa.eu/), run by the European Commission. With an institutional login, it offers computing resources free of charge, among them a [Cloud Container Platform](https://open-science-cloud.ec.europa.eu/services/cloud-container-platform): a managed [Kubernetes](https://kubernetes.io/) environment, that is, a system that runs containers and keeps them running, here in the variant [OKD](https://okd.io/), with a public web address for what runs on it. The smallest tier is enough for a complete DraCor. Why this matters for DraCor and how the guide came about is told in the blog post BLOG-POST-URL.
+This is where the [European Open Science Cloud (EOSC)](https://eosc.eu/) comes in. EOSC is a federation of nodes that offer services for researchers; one of them is the [EOSC EU Node](https://open-science-cloud.ec.europa.eu/), run by the European Commission. With an institutional login, it offers computing resources free of charge, among them a [Cloud Container Platform](https://open-science-cloud.ec.europa.eu/services/cloud-container-platform): a managed [Kubernetes](https://kubernetes.io/) environment, that is, a system that runs containers and keeps them running, here in the variant [OKD](https://okd.io/), with a public web address for what runs on it. The smallest tier is enough for a complete DraCor. Why this matters for DraCor and how the guide came about is told in the blog post [The Cloud, the Credits and a Coding Agent](https://blog.dracor.org/posts/cloud-credits-coding-agent-own-dracor-eosc-eu-node/).
 
 At the end of this guide you will have:
 
@@ -429,7 +429,7 @@ If you use the OpenShift command line (`oc`), one command does the same, because
 
 ## 8. Further Reading and Resources
 
-- The blog post behind this guide: BLOG-POST-URL
+- The blog post behind this guide: [The Cloud, the Credits and a Coding Agent: Your Own DraCor on the EOSC EU Node](https://blog.dracor.org/posts/cloud-credits-coding-agent-own-dracor-eosc-eu-node/)
 - Repository with the configuration files and the agent's instructions: [dracor-org/dracor-eosc-eu-node-deploy](https://github.com/dracor-org/dracor-eosc-eu-node-deploy)
 - DraCor Textbook, chapter "Infrastructure" (running DraCor locally with Docker): [dracor-textbook](https://dracor-org.github.io/dracor-textbook/chapters/06-infrastructure.html)
 - Börner, I. and Trilcke, P. (2024). *CLS INFRA D7.3 On Versioning Living and Programmable Corpora*. Zenodo. [https://zenodo.org/records/11081934](https://zenodo.org/records/11081934)
