@@ -24,7 +24,7 @@ license: "CC BY 4.0"
 
 ## 1. Overview
 
-[DraCor](https://dracor.org) is a platform for the computational analysis of drama: corpora of plays in many languages, encoded in TEI, with an API that serves texts, characters, networks and metrics. The platform runs at dracor.org, but all its components are open source and published as container images, so they can be reused and run anywhere, for example on your own computer. The DraCor Textbook explains how: see the chapter [Infrastructure, "Running DraCor locally"](https://dracor-org.github.io/dracor-textbook/chapters/06-infrastructure.html#practical-examples-running-dracor-locally).
+[DraCor](https://dracor.org) is a platform for the computational analysis of drama: corpora of plays in many languages, encoded in TEI, with an API that serves texts, characters, networks and metrics. The platform runs at dracor.org, but all its components are open source and published as container images, so they can be reused and run anywhere, for example on your own computer. The DraCor Textbook explains how: see the chapter [DraCor in the Context of Research Infrastructures, "Running DraCor locally"](https://textbook.dracor.org/chapters/06-dracor-in-the-context-of-research-infrastructures.html#practical-examples-running-dracor-locally).
 
 Your own instance is useful for teaching, for a project, for a corpus that is not on dracor.org yet, or for a fixed version of the data that does not change while you write. But an instance on your laptop is not on the web: colleagues, students or reviewers cannot open it.
 
@@ -330,7 +330,7 @@ Your DraCor is now on the web at `https://<your host>/`. A fresh instance is emp
 
 ### 5.10. Load a corpus
 
-Loading corpora works on your EU Node instance exactly as on a local one; the DraCor Textbook explains it in more detail in [Infrastructure, "Loading a Corpus"](https://dracor-org.github.io/dracor-textbook/chapters/06-infrastructure.html#loading-a-corpus). In short:
+Loading corpora works on your EU Node instance exactly as on a local one; the DraCor Textbook explains it in more detail in [DraCor in the Context of Research Infrastructures, "Loading a Corpus"](https://textbook.dracor.org/chapters/06-dracor-in-the-context-of-research-infrastructures.html#loading-a-corpus). In short:
 
 Which corpora exist is listed in the [DraCor registry](https://raw.githubusercontent.com/dracor-org/dracor-registry/refs/heads/main/corpora.json): each entry has a `name`, a `title` and the GitHub `repository`. Start with a small one. The test corpus (4 plays) takes about a minute, the Bashkir corpus (3 plays) about one and a half. The largest, the French corpus with about 1,940 plays, took about six hours on the Small tier; during that time the API does not answer.
 
@@ -431,7 +431,7 @@ If you use the OpenShift command line (`oc`), one command does the same, because
 
 - The blog post behind this guide: [The Cloud, the Credits and a Coding Agent: Your Own DraCor on the EOSC EU Node](https://blog.dracor.org/posts/cloud-credits-coding-agent-own-dracor-eosc-eu-node/)
 - Repository with the configuration files and the agent's instructions: [dracor-org/dracor-eosc-eu-node-deploy](https://github.com/dracor-org/dracor-eosc-eu-node-deploy)
-- DraCor Textbook, chapter "Infrastructure" (running DraCor locally with Docker): [dracor-textbook](https://dracor-org.github.io/dracor-textbook/chapters/06-infrastructure.html)
+- DraCor Textbook, chapter "DraCor in the Context of Research Infrastructures" (running DraCor locally with Docker): [textbook.dracor.org](https://textbook.dracor.org/chapters/06-dracor-in-the-context-of-research-infrastructures.html)
 - Börner, I. and Trilcke, P. (2024). *CLS INFRA D7.3 On Versioning Living and Programmable Corpora*. Zenodo. [https://zenodo.org/records/11081934](https://zenodo.org/records/11081934)
 - EOSC EU Node: [open-science-cloud.ec.europa.eu](https://open-science-cloud.ec.europa.eu/), [User Access Policy](https://open-science-cloud.ec.europa.eu/about/access-policy)
 - DraCor MCP server: [dracor-org/dracor-mcp](https://github.com/dracor-org/dracor-mcp)
